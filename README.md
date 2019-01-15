@@ -3,6 +3,7 @@ Search engine for day tours offered in Iceland. Availability-based booking with 
 # Branching model for Git
 The plan is to use GitFlow as a branching model for git. 
 See here: https://datasift.github.io/gitflow/IntroducingGitFlow.html
+
 As well as using this model we use: 
 * git revert instead of git reset. 
 * git merge instead of git rebase.
@@ -10,5 +11,13 @@ As well as using this model we use:
 These concepts and more useful git commands are covered in a fun game on git branching
 (which could also be used for illustrative purposes): 
 https://learngitbranching.js.org/
+
 We use Slack to communicate: 
 https://daytoursearch.slack.com
+
+# Project plan
+1. User stories (a) & product backlog (b)
+2. Domain model
+3. Design model
+4. Test cases
+5. Final product

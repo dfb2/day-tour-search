@@ -16,4 +16,6 @@ CREATE TABLE TOUR
 CREATE TABLE OPERATOR
     ( OperatorName varchar(30) primary key
     , OperatorLocation varchar(20)
+    , OperatorInfo varchar(255)
+    , OperatorCEO varchar(50)
     );

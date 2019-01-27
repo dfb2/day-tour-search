@@ -21,6 +21,8 @@ Day Tours: Name, StartTime (hhmm), EndTime (hhmm), Duration (calculated), Date, 
 
 Hef hugsað mér að hafa _primary key(TourName, TourDate, TourStartTime, TourEndTime)_ því það væri skrítið að vera með margar ferðir með sama nafni á sama tíma, þó það gæti gerst, sérstaklega ef það eru mismunandi TourOperators á þeim.
 
-Operator: Name, Location
+Operator: Name, Location, Info, CEO
+
+Við gætum bætt in Tour Guides eða einhverju. Sé ekki tilganginn. Í raun er Operator taflan meira að segja gagnslaus (það verða nú örugglega bara 5-10 línur þar).
 
 Fyrstu drög að gagnagrunns schema komið í dts.sql; Dettur í raun ekkert meira í hug til að setja í þetta.

@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="DayTourSearch.jar" size="3032" download="eager" />
+    <jar href="DayTourSearch.jar" size="3039" download="eager" />
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="DayTourSearch" >
     <param name="requiredFXVersion" value="8.0+"/>

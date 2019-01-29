@@ -8,6 +8,7 @@ CREATE TABLE TOUR
     , TourDate char(8) not null             -- ddmmyyyy
     , TourMaxTravellers int
 --    , TourCurrentTravellers int           -- Otharfi ad geyma. Haegt ad reikna med:      select sum(Travellers) from BOOKING where TourID = "blablaAk"
+    , TourPrice int
     , TourInfo varchar(255)
     , TourID varchar(30) primary key        -- skammstofun TourName OperatorName TourLocation TourDate TourStartTime
     );
@@ -29,7 +30,7 @@ CREATE TABLE CUSTOMER
     , constraint chk_email check (CustomerEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 
-CREATE TABLE BOOKING
+CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
     ( CustomerUserID varchar(20) references CUSTOMER(CustomerUserID)
     , TourID varchar(30) references TOUR(TourID)
     , Travellers int not null

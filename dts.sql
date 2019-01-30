@@ -11,6 +11,13 @@ CREATE TABLE TOUR
     , TourPrice int
     , TourInfo varchar(255)
     , TourID varchar(30) primary key        -- skammstofun TourName OperatorName TourLocation TourDate TourStartTime
+--    , TourImg 
+/*
+if your pictures or document are typically over 1 MB in size, 
+storing them in the filesystem is more efficient 
+(and with SQL Server 2008's FILESTREAM attribute, 
+they're still under transactional control and part of the database)
+*/
     );
 
 CREATE TABLE OPERATOR
@@ -36,4 +43,11 @@ CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
     , Travellers int not null
 --    , CONSTRAINT check_TourMaxTravellers  -- Gaetum viljad gera constraint herna til ad passa ad thad verdi ekki yfirbokad
 --        CHECK ()                          -- liklega betra ad utfaera thad tho i java og i vidmoti, byggt a TourMaxTravellers og select count
+    );
+
+CREATE TABLE REVIEW 
+    ( TourName varchar(30) references TOUR(TourName)
+    , TourLocation varchar(20) references TOUR(TourLocation)
+    , TourOperator varchar(20) references TOUR(TourOperator)
+    , CustomerReview varchar(255)
     );

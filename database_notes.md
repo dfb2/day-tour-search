@@ -6,7 +6,7 @@ Er að vinna í að gera Einindavenslalíkan og -rit. Glósur eru hér neðst.
 
 [MySQL Cheatsheet](https://gist.github.com/hofmannsven/9164408)
 
-[MySQL Downloads](https://www.mysql.com/downloads/) Erling hlóð niður MySQL Installer og í honum gat ég installað JDBC Connector fyrir Java (líklega óþarfi, held það sé innbyggt í Java, þið checkið bara annars ekkert mál að ná í það), MySQL Workbench (sem ég hata en þar er hægt að skoða gagnagrunninn, framkvæma skipanir o.fl.) og MySQL Shell (CLI sem ég elska).
+[MySQL Downloads](https://dev.mysql.com/downloads/file/?id=483327) Erling hlóð niður MySQL Installer og í honum gat ég installað JDBC Connector fyrir Java (líklega óþarfi, held það sé innbyggt í Java, þið checkið bara annars ekkert mál að ná í það), MySQL Workbench (sem ég hata en þar er hægt að skoða gagnagrunninn, framkvæma skipanir o.fl.) og MySQL Shell (CLI sem ég elska).
 
 
 

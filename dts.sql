@@ -1,3 +1,28 @@
+/**
+ * Virkar ekki í Windows PowerShell en þó í Command Prompt:
+ javac MySQLpractice.java
+ java -cp .;mysql-connector-java-8.0.14.jar MySQLpractice
+ Bætti í system environmental variable paths
+ C:\Program Files (x86)\MySQL\Connector J 8.0\mysql-connector-java-8.0.14
+ sem dugði ekki fyrir VSC en að hafa þetta jar file í project library í netbeans dugði
+
+
+ MySQL Shell
+ Tengjast við gagnagrunn: 
+    \connect hbv401v19cl3@den1.mysql1.gear.host:3306/ 
+ password will be prompted
+
+Byrja að gera sql skipanir
+    \sql
+Velja gagnagrunn
+    use hbv401v19cl3
+
+Þá er hægt að keyra skipanir á skipanalínunni.
+Gat því miður ekki keyrt 
+                source dts.sql
+    beint af þeirri skipanalínu. Prófaðu full path. Fæ villur. En get kóperað inn create Table skipanirnar
+ */
+
 CREATE TABLE TOUR
     ( TourName varchar(30) not null
     , OperatorName varchar(30) references OPERATOR(OperatorName)
@@ -46,10 +71,13 @@ CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
 --        CHECK ()                          -- liklega betra ad utfaera thad tho i java og i vidmoti, byggt a TourMaxTravellers og select count
     );
 
--- Líklegast óþarfa tafla
+/* Líklegast óþarfa tafla
 CREATE TABLE REVIEW 
     ( TourName varchar(30) references TOUR(TourName)
     , TourLocation varchar(20) references TOUR(TourLocation)
     , TourOperator varchar(20) references TOUR(TourOperator)
     , CustomerReview varchar(255)
     );
+
+/
+

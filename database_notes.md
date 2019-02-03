@@ -16,6 +16,7 @@ https://my.gearhost.com/Account/Login
 eok4@hi.is
 Bestpasswordeu_1
 </details>
+
 ### Hvaða upplýsingar þurfa að vera í gagnagrunninum (verða að töflu(m))
 
 **Day Tours**: Name, StartTime (hhmm), EndTime (hhmm), Duration (calculated), Date, Weekday (derived), Operator, Location, MaxTravellers, CurrentTravellers, Price, Info

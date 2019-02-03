@@ -11,6 +11,7 @@ CREATE TABLE TOUR
     , TourPrice int
     , TourInfo varchar(255)
     , TourID varchar(30) primary key        -- skammstofun TourName OperatorName TourLocation TourDate TourStartTime
+    , TourKeywords varchar(255)             -- Gæti verið góð leið til að útfæra leit
 --    , TourImg 
 /*
 if your pictures or document are typically over 1 MB in size, 
@@ -45,6 +46,7 @@ CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
 --        CHECK ()                          -- liklega betra ad utfaera thad tho i java og i vidmoti, byggt a TourMaxTravellers og select count
     );
 
+-- Líklegast óþarfa tafla
 CREATE TABLE REVIEW 
     ( TourName varchar(30) references TOUR(TourName)
     , TourLocation varchar(20) references TOUR(TourLocation)

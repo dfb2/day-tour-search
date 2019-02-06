@@ -1,28 +1,3 @@
-/**
- * Virkar ekki í Windows PowerShell en þó í Command Prompt:
- javac MySQLpractice.java
- java -cp .;mysql-connector-java-8.0.14.jar MySQLpractice
- Bætti í system environmental variable paths
- C:\Program Files (x86)\MySQL\Connector J 8.0\mysql-connector-java-8.0.14
- sem dugði ekki fyrir VSC en að hafa þetta jar file í project library í netbeans dugði
-
-
- MySQL Shell
- Tengjast við gagnagrunn: 
-    \connect hbv401v19cl3@den1.mysql1.gear.host:3306/ 
- password will be prompted
-
-Byrja að gera sql skipanir
-    \sql
-Velja gagnagrunn
-    use hbv401v19cl3
-
-Þá er hægt að keyra skipanir á skipanalínunni.
-Gat því miður ekki keyrt 
-                source dts.sql
-    beint af þeirri skipanalínu. Prófaðu full path. Fæ villur. En get kóperað inn create Table skipanirnar
- */
-
 CREATE TABLE TOUR
     ( TourName varchar(30) not null
     , OperatorName varchar(30) references OPERATOR(OperatorName)
@@ -46,12 +21,15 @@ they're still under transactional control and part of the database)
 */
     );
 
+insert into OPERATOR values ('Kattegat Travel', 'Kattegat', 'Our CEO is a god.', 'Ivar the Boneless', 'theboss@kattegat.no');
+insert into TOUR values ('Horse-riding adventure', 'Kattegat Travel', 'Akureyri', '1400', '1700', '28022019', 10, 100, 'Ride by the coast.', 'HraKTAk280220191400', 'Horse Horses Coast Wind');
+
 CREATE TABLE OPERATOR
     ( OperatorName varchar(30) primary key
     , OperatorLocation varchar(20)
     , OperatorInfo varchar(255)
     , OperatorCEO varchar(50)
-    , OperatorEmail char(8)
+    , OperatorEmail varchar(40)
     , constraint chk_email check (OperatorEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 

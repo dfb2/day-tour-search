@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+
 
 /**
  * Virkar í Command Prompt:
@@ -17,8 +20,78 @@ import java.sql.Statement;
 
 */
 
+
+/*
+insert into OPERATOR values ('Kattegat Travel', 'Kattegat', 'Our CEO is a god.', 'Ivar the Boneless', 'theboss@kattegat.no');
+insert into TOUR values ('Horse-riding adventure', 'Kattegat Travel', 'Akureyri', '1400', '1700', '28022019', 10, 100, 'Ride by the coast.', 'HraKTAk280220191400', 'Horse Horses Coast Wind');
+
+                    
+        // Breytur
+        String ssn;
+        String stmt1 = "select Ssn from Employee";
+        String stmt2 = "update Employee set Salary=Salary+500 where Ssn=?";
+        PreparedStatement p = conn.prepareStatement(stmt2);
+        Statement s1 = conn.createStatement();
+        ResultSet rs = s1.executeQuery(stmt1);
+
+        while(rs.next())
+        {
+            ssn=rs.getString(1);
+            p.clearParameters();
+    		p.setString(1,ssn);
+            p.executeUpdate();
+        }
+*/
 public class MySQLpractice
 {
+    
+    /**
+     * Fyrstu drög að einhvers konar falli sem setur inn Tour í SQL töflu.
+     * Byrjar á að eyða öllum gildum með sama nafn
+     * @param tour
+     * @param op
+     * @param loc
+     * @param c
+     * @throws Exception 
+     */
+    public static void InsertTours(String tour, String op, String loc, Connection c) throws Exception
+    {
+        long t0 = System.nanoTime();
+        try
+        {
+            String s = "delete from tour where TourName = '" + tour + "'";
+            Statement stmt = c.createStatement();
+            stmt.executeUpdate(s);
+            
+            String ps = "insert into TOUR values ('" + tour + "', '" + op + "', '" + loc + "', '1400', '1700', ?, 10, 100, 'Ride by the coast.', ?, 'Horse Horses Coast Wind');";
+            PreparedStatement pstmt = c.prepareStatement(ps);
+            String y = "2019";
+            for(int m = 3; m < 10; m++){
+                for(int d = 1; d < 10; d++){
+                    String v1 = "0"+d+"0"+m+y;
+                    pstmt.setString(1,v1);
+                    String v2 = "HraKTAk" + v1 + "1400";
+                    pstmt.setString(2,v2);
+                    pstmt.executeUpdate();
+                    pstmt.clearParameters();
+                }
+                for(int d = 10; d < 31; d++){
+                    String v1 = d+"0"+m+y;  // Annað álíka ógeð fyrir mánuði 10 11 og 12
+                    pstmt.setString(1,v1);  // Þarf að gera switch statement til að búa til streng
+                    String v2 = "HraKTAk" + v1 + "1400";
+                    pstmt.setString(2,v2);
+                    pstmt.executeUpdate();
+                    pstmt.clearParameters();
+                }
+            }
+        }
+        catch(SQLException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        System.out.println("Sekúndurnar sem það tók að setja inn gildin: " + ((System.nanoTime()-t0)/Math.pow(10,9)));
+    }
+
     public static void main( String[] args )
         throws Exception
     {
@@ -41,7 +114,7 @@ public class MySQLpractice
         
 
         // Rifja upp kosti og galla autocommit
-        boolean USE_AUTOCOMMIT = true;
+        boolean USE_AUTOCOMMIT = false;
         boolean USE_INDEX = false;
 
         try
@@ -50,31 +123,28 @@ public class MySQLpractice
             conn = DriverManager.getConnection(url+dbName, userName, password);
             System.out.println("Connected to database");
             conn.setAutoCommit(USE_AUTOCOMMIT);
+            
+        
+            
+            // Forritið sem smíðar töfluna þyrfti að vera betra.
+             InsertTours("Horse-riding Adventure", "Kattegat Travel", "Akureyri", conn);
 
+            
             Statement stmt = conn.createStatement();
             String s = "select * from tour";
-            ResultSet rs = stmt.executeQuery(s);
-
-            while(rs.next())
-            {
-                boolean b = true;
-                String a;
-                try
-                {
-                    for(int i = 1; true ; i++)
-                    {
-                        a = rs.getString(i);
-                        System.out.println(a);
-                    }
+            ResultSet resultSet = stmt.executeQuery(s);
+            ResultSetMetaData rsmd = resultSet.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    if (i > 1) System.out.print(",  ");
+                    String columnValue = resultSet.getString(i);
+                    System.out.print(columnValue + " " + rsmd.getColumnName(i));
                 }
-                catch(SQLException err)
-                {
-                    System.err.println(err.getMessage());
-                    System.out.println("No problemo!");
-                }
-                
-            }
+                System.out.println("");
+        }
             System.out.println("Still prints this");
+            
         }
         catch(SQLException e)
         {

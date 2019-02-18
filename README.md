@@ -21,14 +21,9 @@ commit for sprint 1 and then the next commit for sprint 2.
 ## The general workflow for git
 * Create a feature / hotfix branch off of the dev branch. 
 Develop feature / fix bug. 
-<<<<<<< HEAD
-* When fininshed, pull from master into branch and resolve conflicts. 
-* Git push your branch to the remote branch of the same name. 
-=======
 * When finished, check out to dev branch and merge dev branch into feature branch.
 Resolve any conflicts. 
 * Push your branch to the remote branch of the same name. 
->>>>>>> 49e0f125da45e123b8eb7bfb2dd10098783814b8
 * Create a pull request and assign reviewers. 
 * Merge with the dev branch. 
 * When all features for a particular sprint have been implemented,

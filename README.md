@@ -6,12 +6,28 @@
 # The day tour search engine
 Search engine for day tours offered in Iceland. Availability-based booking with hotel pickup option. Created in the course Software Development (HBV401G). 
 # Branching model for Git
-The plan is to use GitFlow as a branching model for git. 
-See here: https://datasift.github.io/gitflow/IntroducingGitFlow.html
+The plan is to use a simplified version of GitFlow as a branching model for git. 
+[About GitFlow](https://datasift.github.io/gitflow/IntroducingGitFlow.html)
 
 As well as using this model we use: 
 * git revert instead of git reset. 
 * git merge instead of git rebase.
+
+* We have a master branch, dev (development) branch
+and feature / hotfix branches off of the dev branch
+* The master branch only has release ready versions of the app. 
+The idea is the commits track the app between sprints. So one
+commit for sprint 1 and then the next commit for sprint 2. 
+## The general workflow for git
+* Create a feature / hotfix branch off of the dev branch. 
+Develop feature / fix bug. 
+* When finished, check out to dev branch and merge dev branch into feature branch.
+Resolve any conflicts. 
+* Push your branch to the remote branch of the same name. 
+* Create a pull request and assign reviewers. 
+* Merge with the dev branch. 
+* When all features for a particular sprint have been implemented,
+merge with the master branch. 
 
 These concepts and more useful git commands are covered in a fun game on git branching
 (which could also be used for illustrative purposes): 

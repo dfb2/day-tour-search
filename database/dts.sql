@@ -7,12 +7,12 @@
 -- verð (TourPrice), lýsingu (TourInfo) og leitarorð sem tengjast dagsferðinni (TourKeywords). 
 CREATE TABLE TOUR
     ( TourName varchar(30) not null
-    , OperatorName varchar(30) references OPERATOR(OperatorName)
-    , Tourlocation varchar(20) not null      
+    , OperatorName varchar(30) not null references OPERATOR(OperatorName)
+    , TourLocation varchar(20) not null      
     , TourStartTime char(4) not null        -- hhmm
     , TourEndTime char(4) not null          -- hhmm
     , TourDate date not null                -- yyyy-mm-dd
---  , TourTravellers int default 0              
+    , TourTravellers int default 0              
     , TourMaxTravellers int
     , TourPrice int not null
     , TourInfo varchar(255)

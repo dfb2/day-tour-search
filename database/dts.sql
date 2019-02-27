@@ -60,13 +60,11 @@ CREATE TABLE BOOKING
 --        CHECK ()                          -- liklega betra ad utfaera thad tho i java og i vidmoti, byggt a TourMaxTravellers og select count
     );
 
-/* Líklegast óþarfa tafla
 CREATE TABLE REVIEW 
     ( TourName varchar(30) references TOUR(TourName)
     , TourLocation varchar(20) references TOUR(TourLocation)
     , TourOperator varchar(20) references TOUR(TourOperator)
+    , ReviewDate date not null
     , CustomerReview varchar(255)
     );
-
-/
 

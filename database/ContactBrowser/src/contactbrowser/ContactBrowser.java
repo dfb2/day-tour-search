@@ -10,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.control.ListCell;
 public class ContactBrowser extends Application {
     // List of contact table properties
    private String[] propertyName = {"id",
@@ -34,6 +33,7 @@ public class ContactBrowser extends Application {
    TableView<ContactPerson> contactTableView =
       new TableView<>();
    public ContactBrowser() {
+       System.out.println("Köllum á smiðinn ContactBrowser");
       lblName.setTextFill(Color.web("#0076a3"));
       observableNames = FXCollections.observableArrayList
          (contact.getContacts());
@@ -70,12 +70,13 @@ public class ContactBrowser extends Application {
       // Sets a new cell factory to use in the ListView.
       // This throws away all old list cells and new ListCells
       // created with the new cell factory.
-      listView.setCellFactory(listView-> {
+      listView.setCellFactory(ListView-> {
          Tooltip tooltip = new Tooltip();
          ListCell<ContactPerson> cell = new
-               ListCell<ContactPerson>() { 
+               ListCell<ContactPerson>() {
             public void updateItem(ContactPerson contactPerson,
                   Boolean empty) {
+                System.out.println("Köllum á updateItem í ContactBrowser");
                super.updateItem(contactPerson, empty);
                if (contactPerson != null) {
                   setText(contactPerson.getName());

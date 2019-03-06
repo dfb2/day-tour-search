@@ -34,6 +34,7 @@ CREATE TABLE OPERATOR
     , OperatorInfo varchar(255) not null
     , OperatorCEO varchar(50) not null
     , OperatorEmail varchar(40) not null
+    , CustomerPassword varchar(40) not null
     , constraint chk_email check (OperatorEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 
@@ -41,8 +42,7 @@ CREATE TABLE OPERATOR
 -- Fornafn (CustomerFname) og eftirnafn (CustomerLname)
 -- Netfang (CustomerEmail) og lykilorð (CustomerPassword)
 CREATE TABLE CUSTOMER
-    ( CustomerFname varchar(20) not null
-    , CustomerLname varchar(30) not null
+    ( CustomerName varchar(50) not null
     , CustomerEmail varchar(40) primary key
     , CustomerPassword varchar(40) not null
     , constraint chk_email check (CustomerEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .

@@ -7,23 +7,21 @@
 -- verð (TourPrice), lýsingu (TourInfo) og leitarorð sem tengjast dagsferðinni (TourKeywords). 
 CREATE TABLE TOUR
     ( TourName varchar(30) not null
-    , OperatorName varchar(30) not null references OPERATOR(OperatorName)
-    , TourLocation varchar(20) not null      
+    , TourOperator varchar(30) references OPERATOR(OperatorName)
+    , TourLocation varchar(20) not null     -- 
     , TourStartTime char(4) not null        -- hhmm
     , TourEndTime char(4) not null          -- hhmm
-    , TourDate date not null                -- yyyy-mm-dd
-    , TourTravellers int default 0              
-    , TourMaxTravellers int
+    , TourDate char(8) not null             -- ddmmyyyy
+    , TourTravellers int default 0
+    , TourMaxTravellers int default 100
     , TourPrice int not null
     , TourInfo varchar(255)
     , TourKeywords varchar(255)             -- Gæti verið góð leið til að útfæra leit
+    , TourImg varchar(255) -- slóð á mynd í tölvu
     , constraint TourID primary key(TourName, 
-      OperatorName, TourLocation, TourDate, TourStartTime) -- Gerum þá kröfu að þessi samsetning eiginda sé UNIQUE og ekki NULL
-    -- , TourImg varchar(255) not null -- slóð á mynd í tölvu
-    );
+      TourOperator, TourLocation, TourStartTime, TourDate) -- Gerum þá kröfu að þessi samsetning eiginda sé UNIQUE og ekki NULL
+    ); -- Bæta við vísi
 
-insert into OPERATOR values ('Kattegat Travel', 'Kattegat', 'Our CEO is a god.', 'Ivar the Boneless', 'theboss@kattegat.no');
-insert into TOUR values ('Horse-riding adventure', 'Kattegat Travel', 'Akureyri', '1400', '1700', '2019-02-28', 10, 100, 'Ride by the coast.', 'Horse Horses Coast Wind');
 
 -- Taflan Operator inniheldur eftirfarandi upplýsingar um þá sem sjá um að bjóða upp á dagsferðir.
 -- Nafn (OperatorName) og staðsetningu (OperatorLocation) fyrirtækisins og lýsingu á því (OperatorInfo).
@@ -34,7 +32,7 @@ CREATE TABLE OPERATOR
     , OperatorInfo varchar(255) not null
     , OperatorCEO varchar(50) not null
     , OperatorEmail varchar(40) not null
-    , CustomerPassword varchar(40) not null
+    , OperatorPassword varchar(40) not null
     , constraint chk_email check (OperatorEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 
@@ -50,21 +48,32 @@ CREATE TABLE CUSTOMER
 
 -- Taflan Booking inniheldur eftirfarandi upplýsingar um bókanir í dagsferðir:
 -- Netfang þess sem bókar (CustomerUserID)
--- Auðkenni ferðarinnar (TourID)
 -- Fjölda farþega (Travellers)
-CREATE TABLE BOOKING                        
-    ( CustomerUserID varchar(20) not null references CUSTOMER(CustomerEmail)
-    , TourID varchar(30) not null references TOUR(TourID)
+CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
+    ( CustomerEmail varchar(20) references CUSTOMER(CustomerUserID)
+    , TourName varchar(30) references Tour(TourName)
+    , TourOperator varchar(30) references Tour(TourOperator)
+    , TourLocation varchar(20) references Tour(TourLocation)
+    , TourStartTime char(4) references Tour(TourStartTime)
+    , TourDate char(8) references Tour(TourDate)
     , Travellers int not null
---    , CONSTRAINT check_TourMaxTravellers  -- Gaetum viljad gera constraint herna til ad passa ad thad verdi ekki yfirbokad
---        CHECK ()                          -- liklega betra ad utfaera thad tho i java og i vidmoti, byggt a TourMaxTravellers og select count
+    , constraint BookingID primary key(CustomerEmail, TourName, 
+      TourOperator, TourLocation, TourStartTime, TourDate) -- Hver viðskiptavinur getur þá bara átt eina virka bókun í hverjum tour
     );
 
 CREATE TABLE REVIEW 
     ( TourName varchar(30) references TOUR(TourName)
-    , TourLocation varchar(20) references TOUR(TourLocation)
     , TourOperator varchar(20) references TOUR(TourOperator)
-    , ReviewDate date not null
+    , TourLocation varchar(20) references TOUR(TourLocation)
+    , CustomerName varchar(40) references CUSTOMER(CustomerName)
+    , CustomerEmail varchar(40) references CUSTOMER(CustomerEmail)
+    , ReviewDate char(8) not null
     , CustomerReview varchar(255)
     );
 
+
+-- Dæmi um gildi
+insert into OPERATOR values ('Kattegat Travel', 'Kattegat', 'Our CEO is a god.', 'Ivar the Boneless', 'theboss@kattegat.no', 'ourbosspassword');
+insert into TOUR values ('Horse-riding adventure', 'Kattegat Travel', 'Akureyri', '1400', '1700', '28022019', 0, 10, 100, 'Ride by the coast on a skeleton horse.', 'Horse Horses Coast Wind Skeletons Blood', null);
+insert into CUSTOMER values ('Erling Oskar', 'eok4@hi.is', 'ErlingWasHere');
+insert into REVIEW values ('Horse-riding adventure', 'Kattegat Travel', 'Akureyri', 'Erling Oskar', 'eok4@hi.is', '21032019', 'Búinn með einn bjór og bara gaman að gera gagnagrunn');

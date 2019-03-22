@@ -1,3 +1,13 @@
+# Glósur Erlings
+
+Í Netbeans er hægt að skilgreina svona variables og hægrismella á bakgrunn og velja Refactor -> Encapsulate Fields, og búa til getters og setters.
+T.d. gæti maður búið til getters fyrir alla þessa en bara setter fyrir info
+
+```Java
+private final String name, location , ceo, email, password;
+private String info;
+```
+
 # Version history
 * 0.1 - Prints out sample lines in database. 
 

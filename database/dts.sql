@@ -22,6 +22,10 @@ CREATE TABLE TOUR
       TourOperator, TourLocation, TourStartTime, TourDate) -- Gerum þá kröfu að þessi samsetning eiginda sé UNIQUE og ekki NULL
     ); -- Bæta við vísi
 
+
+-- Taflan Operator inniheldur eftirfarandi upplýsingar um þá sem sjá um að bjóða upp á dagsferðir.
+-- Nafn (OperatorName) og staðsetningu (OperatorLocation) fyrirtækisins og lýsingu á því (OperatorInfo).
+-- Nafn forstjóra fyrirtækisins (OperatorCEO) og netfangið hans (OperatorEmail)
 CREATE TABLE OPERATOR
     ( OperatorName varchar(30) primary key
     , OperatorLocation varchar(20) not null
@@ -32,6 +36,9 @@ CREATE TABLE OPERATOR
     , constraint chk_email check (OperatorEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 
+-- Taflan Customer inniheldur eftirfarandi upplýsingar um mögulega kaupendur dagsferða: 
+-- Fornafn (CustomerFname) og eftirnafn (CustomerLname)
+-- Netfang (CustomerEmail) og lykilorð (CustomerPassword)
 CREATE TABLE CUSTOMER
     ( CustomerName varchar(50) not null
     , CustomerEmail varchar(40) primary key

@@ -13,39 +13,23 @@ import java.sql.ResultSetMetaData;
  * Virkar í Command Prompt:
  javac MySQLpractice.java
  java -cp .;mysql-connector-java-8.0.14.jar MySQLpractice
- Bætti í system environmental variable paths
+ * Bætti í system environmental variable paths 
  C:\Program Files (x86)\MySQL\Connector J 8.0\mysql-connector-java-8.0.14
  sem dugði ekki fyrir VSC en að hafa þetta jar file í project library í netbeans dugði
-
-
-*/
-
-
-/*
-insert into OPERATOR values ('Kattegat Travel', 'Kattegat', 'Our CEO is a god.', 'Ivar the Boneless', 'theboss@kattegat.no');
-insert into TOUR values ('Horse-riding adventure', 'Kattegat Travel', 'Akureyri', '1400', '1700', '28022019', 10, 100, 'Ride by the coast.', 'HraKTAk280220191400', 'Horse Horses Coast Wind');
-
-                    
-        // Breytur
-        String ssn;
-        String stmt1 = "select Ssn from Employee";
-        String stmt2 = "update Employee set Salary=Salary+500 where Ssn=?";
-        PreparedStatement p = conn.prepareStatement(stmt2);
-        Statement s1 = conn.createStatement();
-        ResultSet rs = s1.executeQuery(stmt1);
-
-        while(rs.next())
-        {
-            ssn=rs.getString(1);
-            p.clearParameters();
-    		p.setString(1,ssn);
-            p.executeUpdate();
-        }
 */
 public class MySQLpractice
 {
+   
+    // Kallar bara á dbAdminDAO sem getur verið aðal controller'inn okkar
+    public static void main( String[] args )
+        throws Exception {
+        dbAdminDAO.main();
+    }
+
     
-    /**
+
+ 
+    /** Gamalt fall
      * Fyrstu drög að einhvers konar falli sem setur inn Tour í SQL töflu.
      * Byrjar á að eyða öllum gildum með sama nafn
      * @param tour
@@ -92,8 +76,9 @@ public class MySQLpractice
         System.out.println("Sekúndurnar sem það tók að setja inn gildin: " + ((System.nanoTime()-t0)/Math.pow(10,9)));
     }
 
-    public static void main( String[] args )
-        throws Exception
+ }
+
+     /* Gamla main fallið héðan
     {
         // Miðað við default port: 3306
         String url = "jdbc:mysql://den1.mysql1.gear.host:3306/";
@@ -164,7 +149,7 @@ public class MySQLpractice
             }
         }
     }
-}
+    */
 
 // GÆTI ÞURFT AD DOWNLOAD'A OG SPECIFY CLASSPATH
 /* 

@@ -23,7 +23,6 @@ public class MySQLpractice
     // Kallar bara á dbAdminDAO sem getur verið aðal controller'inn okkar
     public static void main( String[] args )
         throws Exception {
-        dbAdminDAO.main();
     }
 
     

@@ -6,7 +6,7 @@ package en.hi.dtsapp.model;
  * @date Spring 2019
  * Háskóli Íslands
  */
-class Tour {
+public class Tour {
     
     private final String name, operator, location, startTime, endTime, date, maxTravellers, price, info, keywords, img;
     private String travellers;
@@ -22,8 +22,12 @@ class Tour {
         this.travellers = travellers;
         this.maxTravellers = maxTravellers;
         this.price = price;
-        this.info = info;
-        this.keywords = keywords;
+        if (info == null) {
+            this.info = "";
+        } else this.info = info;
+        if (keywords == null) {
+            this.keywords = "";
+        } else this.keywords = keywords;
         if (img == null) {
             // use a standard image that is stored locally
             this.img = img;

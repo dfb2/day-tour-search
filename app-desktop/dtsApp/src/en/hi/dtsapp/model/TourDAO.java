@@ -11,7 +11,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
 /** Class objectives (static methods, OOD unnecessary)
  * Fetches all tours from database
@@ -25,18 +27,18 @@ import java.util.*;
  */
 public class TourDAO implements DAO {
     
-    public static List initiateTourCatalog() throws Exception {
+    public static List<Tour> initiateTourCatalog() throws Exception {
         List<Tour> tourList = new ArrayList<>();
         try {
             Class.forName(DRIVER);
         }
         catch (ClassNotFoundException ex) {
             System.err.println(ex.getMessage());
-            System.err.println("Fekk ekki driver");
+            System.err.println("Failed to connect ot driver in TourDAO.java");
         }
         try  {
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connected to database");
+            System.out.println("Connected to database using TourDAO.java");
             
             // Select all tours from tour table
             Statement stmt = conn.createStatement();

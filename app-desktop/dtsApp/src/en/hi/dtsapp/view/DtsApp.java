@@ -18,10 +18,14 @@ public class DtsApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("BrowseTours.fxml"));
 
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 800, 400);
 
         primaryStage.setTitle("Day Tour Search!");
         primaryStage.setScene(scene);
+        
+        // Determined minimum size from https://dzone.com/articles/statically-compiled-groovy-or-time-to-give-groovy 
+        primaryStage.setMinHeight(250);
+        primaryStage.setMinWidth(500);
         primaryStage.show();
     }
 

@@ -18,26 +18,45 @@ import javafx.collections.ObservableList;
 public class TourCatalog {
     
     private final List<Tour> TOUR_LIST;
-    private final ObservableList<Tour> observableTourList;
+    private final List<Tour> DISTINCT_NAME_TOUR_LIST;
+//    private final ObservableList<Tour> observableTourList;
     
     public TourCatalog() throws Exception {
-        
         this.TOUR_LIST = TourDAO.initiateTourCatalog();
-        observableTourList =  FXCollections.observableArrayList(TOUR_LIST);
+        this.DISTINCT_NAME_TOUR_LIST = TourDAO.distinctTourCatalog();
+ //       observableTourList =  FXCollections.observableArrayList(TOUR_LIST);
     }
     
-    public ObservableList<Tour> getObservableTourList() {
-        return observableTourList;
+    public ObservableList<Tour> getFullTourList() {
+        return FXCollections.observableArrayList(TOUR_LIST);
     }
+    
+    public ObservableList<Tour> getDistinctNameTourList() {
+        return FXCollections.observableArrayList(DISTINCT_NAME_TOUR_LIST);
+    }
+    
+    /*
+    public ObservableList<Tour> getObservableTourListOrderByPrice() {
+        switch priceOrder:
+                case 0:
+                    priceOrder=1;
+                    return observableTourList.sorted(comparator);
+                case 1:
+                    priceOrder=-1;
+                    return observableTourList.;
+        return observableTourList.sorted(comparator);
+    }
+    */
+    
 
     
     
     // Basically a test method
     public void displaySomeTours() {
         System.out.println("Displaying some Tours:");
-        System.out.println(observableTourList.get(10));
-        System.out.println(observableTourList.get(100));
-        System.out.println(observableTourList.get(400));
-        System.out.println(observableTourList.get(700));
+        System.out.println(TOUR_LIST.get(10));
+        System.out.println(TOUR_LIST.get(100));
+        System.out.println(TOUR_LIST.get(400));
+        System.out.println(TOUR_LIST.get(700));
     }
 }

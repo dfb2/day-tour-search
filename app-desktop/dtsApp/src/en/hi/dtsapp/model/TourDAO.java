@@ -69,9 +69,10 @@ public class TourDAO implements DAO {
     
     public static void main() throws Exception {
         long t0 = System.nanoTime();
-        List immutableList = initiateTourCatalog();
+        List<Tour> immutableList = initiateTourCatalog();
         long t1 = System.nanoTime();
         System.out.println("Length of immutable List is " + immutableList.size());
         System.out.println("Fetching tours and creating immutable list took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
+        // for(int i = 0; i < 10; i++) System.out.println(immutableList.get(i).getName());
     }
 }

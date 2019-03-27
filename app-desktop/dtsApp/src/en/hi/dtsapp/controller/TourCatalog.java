@@ -18,11 +18,26 @@ import javafx.collections.ObservableList;
 public class TourCatalog {
     
     private final List<Tour> TOUR_LIST;
-//    private ObservableList<Tour> observableTourList;
+    private final ObservableList<Tour> observableTourList;
     
     public TourCatalog() throws Exception {
         
         this.TOUR_LIST = TourDAO.initiateTourCatalog();
-//        observableTourList =  FXCollections.ObservableArrayList();
+        observableTourList =  FXCollections.observableArrayList(TOUR_LIST);
+    }
+    
+    public ObservableList<Tour> getObservableTourList() {
+        return observableTourList;
+    }
+
+    
+    
+    // Basically a test method
+    public void displaySomeTours() {
+        System.out.println("Displaying some Tours:");
+        System.out.println(observableTourList.get(10));
+        System.out.println(observableTourList.get(100));
+        System.out.println(observableTourList.get(400));
+        System.out.println(observableTourList.get(700));
     }
 }

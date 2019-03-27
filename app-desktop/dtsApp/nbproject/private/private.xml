@@ -5,8 +5,11 @@
         <group name="C++">
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/view/DtsApp.java</file>
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/Tour.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/view/BrowseToursController.java</file>
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/TourDAO.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/view/BrowseTours.fxml</file>
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAO.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/controller/TourCatalog.java</file>
         </group>
     </open-files>
 </project-private>

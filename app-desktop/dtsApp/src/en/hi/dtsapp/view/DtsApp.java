@@ -2,11 +2,9 @@ package en.hi.dtsapp.view;
 
 import en.hi.dtsapp.model.TourDAO;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 /**
  * Hlutverk klasans
@@ -17,23 +15,12 @@ import javafx.stage.Stage;
 public class DtsApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("BrowseTours.fxml"));
 
         Scene scene = new Scene(root, 300, 250);
 
-        primaryStage.setTitle("Hello World!");
+        primaryStage.setTitle("Day Tour Search!");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -41,9 +28,11 @@ public class DtsApp extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
-        // launch(args);
-        TourDAO.main();
+    public static void main(String[] args) {
+        launch(args);
+        
+        // It's possible to call the test method for TourDAO.java
+        // TourDAO.main(); 
     }
 
 }

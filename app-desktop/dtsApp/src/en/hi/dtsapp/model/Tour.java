@@ -33,6 +33,12 @@ public class Tour {
             this.img = img;
         } else this.img = img; 
     }
+    
+    @Override
+    public String toString(){
+        return getName();
+    }
+    
 
     /**
      * @return the name

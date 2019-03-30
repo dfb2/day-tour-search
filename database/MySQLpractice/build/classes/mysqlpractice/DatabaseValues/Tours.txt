@@ -1,0 +1,2 @@
+'tourOperaTourOperatortor', 'TourLocation', 'TourStartTime (hhmm)', 'TourEndTime (hhmm)', ? (TourDate gert í forriti), TourTravellers, TourMaxTravellers, TourPrice, 'TourInfo', 'TourKeywords', 'TourImg'
+'Horse-riding adventure', 'Kattegat Travel', 'Akureyri', '1400', '1700', ?, 0, 10, 100, 'Ride by the coast on a skeleton horse.', 'Horse Horses Coast Wind Skeletons Blood', 'fakepathtoimg - can be null'

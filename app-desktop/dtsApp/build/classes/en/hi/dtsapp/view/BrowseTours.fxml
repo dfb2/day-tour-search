@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="en.hi.dtsapp.view.BrowseToursController">
+    <stylesheets>
+        <URL value="@css/browsetours.css" />
+    </stylesheets>
+   <children>
+      <ScrollPane layoutY="52.0" prefHeight="347.0" prefWidth="800.0">
+         <content>
+            <ListView fx:id="tourListView" prefHeight="344.0" prefWidth="800.0" />
+         </content>
+      </ScrollPane>
+      <ToolBar prefHeight="40.0" prefWidth="800.0">
+        <items>
+            <TextField fx:id="searchField" prefHeight="25.0" prefWidth="201.0" text="Search..." />
+            <DatePicker prefHeight="25.0" prefWidth="150.0" promptText="From" />
+            <DatePicker prefWidth="150.0" promptText="To" />
+            <SplitMenuButton mnemonicParsing="false" text="1 Passenger">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+            </SplitMenuButton>
+            <Button mnemonicParsing="false" onAction="#browseToursByKeyword" text="Search" />
+          <Button mnemonicParsing="false" onAction="#browseDistinctTours" text="Browse Distinct" />
+        </items>
+      </ToolBar>
+   </children>
+</AnchorPane>

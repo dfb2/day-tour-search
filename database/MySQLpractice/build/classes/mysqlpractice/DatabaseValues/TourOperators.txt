@@ -1,0 +1,6 @@
+'Kattegat Travel', 'Kattegat', 'Our CEO is a god.', 'Ivar the Boneless', 'theboss@kattegat.no', 'ourbosspassword'
+'Not Ice Travel', 'Reykjavík', 'Travel is not a dream', 'Sunna Stirða', 'sunna@noticetravel.is', 'icetravelpassword'
+'Blabla Tourism', 'Akureyri', 'We speak only french', 'Gerard', 'gerard@blablatourism.is', 'blablatourismpassword'
+'Egills Tours', 'Egilstadir', 'Puffins and whales', 'Egill Skallagrímsson', 'egill@skallagrimsson.is', 'egillspassword'
+'Vik Tours', 'Vik', 'Do not drown on the beach please', 'Viki Vaki', 'vikivaki@viktours.is', 'vikpassword'
+'Isafjordur Tours', 'Isafjordur', 'Email us for special deals on arctic fox furs for sale', 'Joi', 'foxsales@isafjordurtours.is', 'isafjordurpassword'

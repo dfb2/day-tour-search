@@ -3,6 +3,9 @@ package en.hi.dtsapp.view;
 import en.hi.dtsapp.controller.TourCatalog;
 import en.hi.dtsapp.model.Tour;
 import java.net.URL;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 /**
  * FXML Controller class
@@ -79,11 +83,16 @@ public class BrowseToursController implements Initializable {
     }
     
     @FXML
-    private void browseToursByKeyword() {
+    private void browseToursByKeyword() throws ParseException {
+        String kw = searchField.getText(); 
+
         if (searchField == null || searchField.getText().isEmpty()){
             searchField.setText("Type keywords here");
+        }else if(kw.equals("Search..."))  {
+            ObservableList<Tour> filteredList = 
+                    tourCatalog.getToursByDate(dateFrom, dateTo);
+            tourListView.setItems(filteredList);
         } else {
-            String kw = searchField.getText(); 
             ObservableList<Tour> filteredList = 
                     tourCatalog.getToursByKeyword(kw);
             tourListView.setItems(filteredList);
@@ -92,13 +101,17 @@ public class BrowseToursController implements Initializable {
     
     @FXML
     private void storeSelectedFromDate() {
-        dateFrom = dateFromField.getValue().toString();
+        String pattern = "ddMMyyyy";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+        dateFrom = dateFromField.getValue().format(dateFormatter);
         System.out.println("Chosen from date is " + dateFrom);
     }
     
     @FXML
     private void storeSelectedToDate() {
-        dateTo = dateToField.getValue().toString();
+        String pattern = "ddMMyyyy";
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+        dateTo = dateToField.getValue().format(dateFormatter);
         System.out.println("Chosen to date is " + dateTo);    
     }
 }

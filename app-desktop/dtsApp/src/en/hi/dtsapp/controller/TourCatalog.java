@@ -2,9 +2,13 @@ package en.hi.dtsapp.controller;
 
 import en.hi.dtsapp.model.Tour;
 import en.hi.dtsapp.model.TourDAO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.DatePicker;
 
 /**
  * Class objective
@@ -37,11 +41,39 @@ public class TourCatalog {
     
     public ObservableList<Tour> getToursByKeyword(String kw) {
             ObservableList <Tour> fullTourList = this.getFullTourList();
+            
             ObservableList <Tour> newTourList = fullTourList.filtered(s -> s.getKeywords().contains(kw) 
                     || s.getName().contains(kw) 
                     || s.getInfo().contains(kw) 
                     || s.getLocation().contains(kw) 
                     || s.getOperator().contains(kw));
+            return newTourList;
+    }
+    
+    public Boolean checkBetweenDates(Date from, Date to, Date between){
+        return between.after(from) && between.before(to);
+    }
+    
+     public ObservableList<Tour> getToursByDate(String from, String to) throws ParseException {
+            ObservableList <Tour> fullTourList = this.getFullTourList();
+            if(from == null || to == null ){
+                return null;
+            }
+            Date date1=new SimpleDateFormat("ddMMyyyy").parse(from);
+            Date date2=new SimpleDateFormat("ddMMyyyy").parse(to);
+            System.out.println(date1);
+            System.out.println(date2);
+            ObservableList <Tour> newTourList = FXCollections.observableArrayList();
+            for (Tour s : fullTourList) {
+                Date dateS = new SimpleDateFormat("ddMMyyyy").parse(s.getDate());
+                if(s.getDate().contains(from)){
+                    newTourList.add(s);
+                } else if(s.getDate().contains(to)) {
+                    newTourList.add(s);
+                } else if (checkBetweenDates(date1, date2, dateS)){
+                    newTourList.add(s);
+                }
+            }   
             return newTourList;
     }
     

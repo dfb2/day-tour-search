@@ -35,6 +35,16 @@ public class TourCatalog {
         return FXCollections.observableArrayList(DISTINCT_NAME_TOUR_LIST);
     }
     
+    public ObservableList<Tour> getToursByKeyword(String kw) {
+            ObservableList <Tour> fullTourList = this.getFullTourList();
+            ObservableList <Tour> newTourList = fullTourList.filtered(s -> s.getKeywords().contains(kw) 
+                    || s.getName().contains(kw) 
+                    || s.getInfo().contains(kw) 
+                    || s.getLocation().contains(kw) 
+                    || s.getOperator().contains(kw));
+            return newTourList;
+    }
+    
     /*
     public ObservableList<Tour> getObservableTourListOrderByPrice() {
         switch priceOrder:
@@ -47,10 +57,7 @@ public class TourCatalog {
         return observableTourList.sorted(comparator);
     }
     */
-    
-
-    
-    
+   
     // Basically a test method
     public void displaySomeTours() {
         System.out.println("Displaying some Tours:");

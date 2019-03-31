@@ -16,22 +16,16 @@ import static org.junit.Assert.*;
 public class TourCatalogTest {
     
     private TourCatalog tourCatalog;
-    
-    
-    public TourCatalogTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
+    private String validKeyword1, invalidKeyword1;
+    private String validKeyword2, invalidKeyword2;
     
     @Before
     public void setUp() throws Exception {
         tourCatalog = new TourCatalog();
+        validKeyword1 = "Arctic Fox hunt";
+        invalidKeyword1 = "Nonesense";
+        validKeyword2 = "Horse-riding adventure";
+        invalidKeyword2 = "Goat-riding adventure";
     }
     
     @After
@@ -51,17 +45,23 @@ public class TourCatalogTest {
     
     @Test
     public void testSearchByValidKeyword() {
-   //     assert(tourCatalog.getFullTourList();
+        assertFalse(tourCatalog.getToursByKeyword(validKeyword1).isEmpty());
     }
     
     @Test
     public void testSearchByInvalidKeyword() {
-    //    assert(tourCatalog.getFullTourList();
+        assertTrue(tourCatalog.getToursByKeyword(invalidKeyword1).isEmpty());
     }
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    
+    @Test
+    public void testSearchByValidKeywordRepeatedly() {
+        assertFalse(tourCatalog.getToursByKeyword(validKeyword1).isEmpty() &&
+                    tourCatalog.getToursByKeyword(validKeyword2).isEmpty());
+    }
+    
+    @Test
+    public void testSearchByInvalidKeywordRepeatedly() {
+        assertTrue(tourCatalog.getToursByKeyword(invalidKeyword1).isEmpty() &&
+                    tourCatalog.getToursByKeyword(invalidKeyword2).isEmpty());
+    }
 }

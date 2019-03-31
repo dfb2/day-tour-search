@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
@@ -24,6 +25,16 @@ public class BrowseToursController implements Initializable {
     private ListView<Tour> tourListView;
     @FXML // @FXML  
     private TextField searchField;
+    
+    @FXML
+    private DatePicker dateFromField;
+    
+    private String dateFrom;
+    
+    @FXML
+    private DatePicker dateToField;
+    
+    private String dateTo;
     
     private TourCatalog tourCatalog;
     private ObservableList<Tour> tourList;
@@ -73,14 +84,21 @@ public class BrowseToursController implements Initializable {
             searchField.setText("Type keywords here");
         } else {
             String kw = searchField.getText(); 
-            tourList = tourCatalog.getFullTourList();
-            tourList = tourList.filtered(s -> s.getKeywords().contains(kw) || s.getName().contains(kw) ||
-                    s.getInfo().contains(kw) || s.getLocation().contains(kw) || s.getOperator().contains(kw));
-            tourListView.setItems(tourList);
+            ObservableList<Tour> filteredList = 
+                    tourCatalog.getToursByKeyword(kw);
+            tourListView.setItems(filteredList);
         }
-        
     }
     
+    @FXML
+    private void storeSelectedFromDate() {
+        dateFrom = dateFromField.getValue().toString();
+        System.out.println("Chosen from date is " + dateFrom);
+    }
     
-    
+    @FXML
+    private void storeSelectedToDate() {
+        dateTo = dateToField.getValue().toString();
+        System.out.println("Chosen to date is " + dateTo);    
+    }
 }

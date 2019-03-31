@@ -20,8 +20,8 @@
       <ToolBar prefHeight="40.0" prefWidth="800.0">
         <items>
             <TextField fx:id="searchField" prefHeight="25.0" prefWidth="201.0" text="Search..." />
-            <DatePicker prefHeight="25.0" prefWidth="150.0" promptText="From" />
-            <DatePicker prefWidth="150.0" promptText="To" />
+            <DatePicker fx:id="dateFromField" onAction="#storeSelectedFromDate" prefHeight="25.0" prefWidth="150.0" promptText="From" />
+            <DatePicker fx:id="dateToField" onAction="#storeSelectedToDate" prefWidth="150.0" promptText="To" />
             <SplitMenuButton mnemonicParsing="false" text="1 Passenger">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />

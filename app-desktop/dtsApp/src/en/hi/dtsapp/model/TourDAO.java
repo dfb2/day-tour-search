@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package en.hi.dtsapp.model;
 
 import java.sql.Connection;
@@ -15,15 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
-/** Class objectives (static methods, OOD unnecessary)
+/** Class objectives (static methods, OOD is unnecessary)
  * Fetches all tours from database
  * Creates Java Tour objects from these Tours
  * Puts the Java Tour objects into an Unmodifiable list
  * Returns the Unmodifiable list
  * 
  * @author Erling Óskar Kristjánsson eok4@hi.is
- * @date
- * Háskóli Íslands
  */
 public class TourDAO implements DAO {
     
@@ -34,7 +26,7 @@ public class TourDAO implements DAO {
         }
         catch (ClassNotFoundException ex) {
             System.err.println(ex.getMessage());
-            System.err.println("Failed to connect ot driver in TourDAO.java");
+            System.err.println("Failed to connect to driver in TourDAO.java");
         }
         try  {
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -75,7 +67,6 @@ public class TourDAO implements DAO {
         long t1 = System.nanoTime();
         System.out.println("Length of immutable List is " + immutableList.size());
         System.out.println("Fetching tours and creating immutable list took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
-        // for(int i = 0; i < 10; i++) System.out.println(immutableList.get(i).getName());
     }
 
     public static List<Tour> distinctTourCatalog() throws Exception {

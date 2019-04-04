@@ -3,13 +3,16 @@ package en.hi.dtsapp.view;
 import en.hi.dtsapp.controller.TourCatalog;
 import en.hi.dtsapp.model.Tour;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 
 /**
@@ -21,18 +24,26 @@ import javafx.scene.control.TextField;
  */
 public class BrowseToursController implements Initializable {
     
-    @FXML // @FXML  
+    @FXML
     private ListView<Tour> tourListView;
-    @FXML // @FXML  
+    @FXML
     private TextField searchField;
     
     @FXML
     private DatePicker dateFromField, dateToField;
-    private String dateFrom, dateTo;
+    private LocalDate dateFrom, dateTo;
     
     private TourCatalog tourCatalog;
     private ObservableList<Tour> tourList;
-
+    @FXML
+    private MenuItem passengerMenuItem1, passengerMenuItem2, passengerMenuItem3, passengerMenuItem4;
+    @FXML
+    private MenuItem passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8;
+    private MenuItem[] PassengerMenuItems;
+    private int selectedPassengers;
+    @FXML
+    private SplitMenuButton PassengerSplitMenu;
+    
     /**
      * Initializes the controller class.
      * @param url
@@ -47,6 +58,11 @@ public class BrowseToursController implements Initializable {
         }
         tourList = tourCatalog.getFullTourList();
         tourListView.setItems(tourList);
+        PassengerMenuItems = new MenuItem[]{
+            passengerMenuItem1, passengerMenuItem2, passengerMenuItem3, passengerMenuItem4,
+            passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8
+        };
+        selectedPassengers = 1;
     }
     
     @FXML
@@ -55,11 +71,14 @@ public class BrowseToursController implements Initializable {
     }
     
     @FXML // Passar upp á NullPointerExceptions og tóm input
-    private void searchForTours() { 
-        try{ if(dateTo == null) dateTo=""; } catch(NullPointerException e) { dateTo=""; }
-        try{ if(dateFrom == null) dateFrom=""; } catch(NullPointerException e) { dateFrom=""; }
+    private void searchForTours() {
+        // DTSMethods.DATE_FORMATTER();
+        if(dateFromField.getValue() == null) dateFrom = LocalDate.now(); 
+        else dateFrom = dateFromField.getValue();
+        if(dateToField.getValue() == null) dateTo = LocalDate.MAX;
+         else dateTo = dateToField.getValue();
         if ( (searchField.getText().isEmpty() || searchField.getText().contains("Search"))
-                && dateFrom.isEmpty() && dateTo.isEmpty()){
+                && dateFrom == LocalDate.now() && dateTo == LocalDate.MAX) {
             searchField.setPromptText("Search...");
             tourList = tourCatalog.getFullTourList();
             tourListView.setItems(tourList);
@@ -69,33 +88,35 @@ public class BrowseToursController implements Initializable {
             tourListView.setItems(filteredList);
         }
     }
-    
-    @FXML
-    private void storeSelectedFromDate() {
-        try{ if(dateFromField.getValue() == null) return; } catch (NullPointerException e){ return; }
-        String pattern = "ddMMyyyy";
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-        dateFrom = dateFromField.getValue().format(dateFormatter);
-        System.out.println("Chosen from date is " + dateFrom);
+
+    @FXML // Reacts to number of passengers being selected from drop-down menu
+    private void storeCurrentPassengers(ActionEvent event) {
+        MenuItem menuItem = (MenuItem)event.getSource(); 
+        setCurrentPassengers(numberOfPassengers(menuItem));
     }
     
-    @FXML
-    private void storeSelectedToDate() {
-        try{ if(dateToField.getValue() == null) return; } catch (NullPointerException e){ return; }
-        String pattern = "ddMMyyyy";
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-        dateTo = dateToField.getValue().format(dateFormatter);
-        System.out.println("Chosen to date is " + dateTo);    
+    // sets the currently selected numbers of passengers and displays as the drop-down menu text
+    private void setCurrentPassengers(int currPass){
+        selectedPassengers = currPass;
+        String s = String.valueOf(selectedPassengers).concat(" Passenger");
+        if(selectedPassengers>1) s = s.concat("s");
+        PassengerSplitMenu.setText(s);
+    }
+
+    // returns the index of menuItem (number of passengers that was selected)
+    private int numberOfPassengers(MenuItem menuItem) {
+        for(int i = 0; i < PassengerMenuItems.length; i++) {
+            if(menuItem == PassengerMenuItems[i]) return i+1;
+        }
+        return 11;
     }
 
     @FXML
     private void clearSearchParameters() {
         searchField.setPromptText("Search...");
-        try{ dateTo=""; dateToField.setValue(null); } catch(NullPointerException e) { dateTo=""; dateToField.setValue(null);}
-        try{ dateFrom=""; dateFromField.setValue(null); } catch(NullPointerException e) { dateFrom=""; dateFromField.setValue(null);}
+        try{ dateTo=null; dateToField.setValue(null); } catch(NullPointerException e) { dateTo=null; dateToField.setValue(null);}
+        try{ dateFrom=null; dateFromField.setValue(null); } catch(NullPointerException e) { dateFrom=null; dateFromField.setValue(null);}
+        setCurrentPassengers(1);
         searchForTours();
     }
-    
-
-
 }

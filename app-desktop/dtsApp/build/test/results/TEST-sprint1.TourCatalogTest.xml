@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="DESKTOP-1S8MPJG" name="sprint1.TourCatalogTest" skipped="0" tests="3" time="42.322" timestamp="2019-03-31T21:58:12">
+<testsuite errors="3" failures="0" hostname="DESKTOP-1S8MPJG" name="sprint1.TourCatalogTest" skipped="0" tests="12" time="82.085" timestamp="2019-04-03T21:58:27">
   <properties>
     <property name="netbeans.autoupdate.country" value="US" />
     <property name="ant.file.type.dtsApp-impl" value="file" />
@@ -47,7 +47,7 @@
     <property name="user.name" value="Erling Oskar" />
     <property name="copylibs.rebase" value="true" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner sprint1.TourCatalogTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Erling Oskar\Documents\hi\v19\hbv\DayTourSearch\app-desktop\dtsApp\build\test\results\TEST-sprint1.TourCatalogTest.xml crashfile=C:\Users\Erling Oskar\Documents\hi\v19\hbv\DayTourSearch\app-desktop\dtsApp\build\junitvmwatcher863280252733099183.properties propsfile=C:\Users\Erling Oskar\Documents\hi\v19\hbv\DayTourSearch\app-desktop\dtsApp\build\junit5081842587303168489.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner sprint1.TourCatalogTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Erling Oskar\Documents\hi\v19\hbv\DayTourSearch\app-desktop\dtsApp\build\test\results\TEST-sprint1.TourCatalogTest.xml crashfile=C:\Users\Erling Oskar\Documents\hi\v19\hbv\DayTourSearch\app-desktop\dtsApp\build\junitvmwatcher4402595451377276466.properties propsfile=C:\Users\Erling Oskar\Documents\hi\v19\hbv\DayTourSearch\app-desktop\dtsApp\build\junit3038555886644971065.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -365,9 +365,44 @@
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
   </properties>
-  <testcase classname="sprint1.TourCatalogTest" name="testNotEmpty" time="16.265" />
-  <testcase classname="sprint1.TourCatalogTest" name="testSearchByValidKeyword" time="11.54" />
-  <testcase classname="sprint1.TourCatalogTest" name="testNotNull" time="14.464" />
+  <testcase classname="sprint1.TourCatalogTest" name="testNotEmpty" time="6.801" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByValidKeyword" time="6.536" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByInvalidDateAndValidKeyword" time="7.099">
+    <error type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException
+	at java.util.AbstractList.remove(AbstractList.java:161)
+	at java.util.AbstractList$Itr.remove(AbstractList.java:374)
+	at java.util.AbstractCollection.remove(AbstractCollection.java:293)
+	at en.hi.dtsapp.controller.TourCatalog.getToursByDate(TourCatalog.java:105)
+	at en.hi.dtsapp.controller.TourCatalog.getToursBySearchParameters(TourCatalog.java:70)
+	at sprint1.TourCatalogTest.testSearchByInvalidDateAndValidKeyword(TourCatalogTest.java:88)
+</error>
+  </testcase>
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByInvalidKeyword" time="6.52" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByValidDateAndValidKeyword" time="6.529">
+    <error type="java.lang.UnsupportedOperationException">java.lang.UnsupportedOperationException
+	at java.util.AbstractList.remove(AbstractList.java:161)
+	at java.util.AbstractList$Itr.remove(AbstractList.java:374)
+	at java.util.AbstractCollection.remove(AbstractCollection.java:293)
+	at en.hi.dtsapp.controller.TourCatalog.getToursByDate(TourCatalog.java:105)
+	at en.hi.dtsapp.controller.TourCatalog.getToursBySearchParameters(TourCatalog.java:70)
+	at sprint1.TourCatalogTest.testSearchByValidDateAndValidKeyword(TourCatalogTest.java:98)
+</error>
+  </testcase>
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByValidDate" time="6.42">
+    <error type="java.util.ConcurrentModificationException">java.util.ConcurrentModificationException
+	at java.util.AbstractList$Itr.checkForComodification(AbstractList.java:386)
+	at java.util.AbstractList$Itr.next(AbstractList.java:355)
+	at en.hi.dtsapp.controller.TourCatalog.getToursByDate(TourCatalog.java:100)
+	at en.hi.dtsapp.controller.TourCatalog.getToursBySearchParameters(TourCatalog.java:70)
+	at sprint1.TourCatalogTest.testSearchByValidDate(TourCatalogTest.java:83)
+</error>
+  </testcase>
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByInvalidKeywordFollowedByValidKeyword" time="7.376" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByValidDateAndInalidKeyword" time="6.695" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByWithAllParametersEmpty" time="6.392" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByInvalidKeywordRepeatedly" time="6.576" />
+  <testcase classname="sprint1.TourCatalogTest" name="testSearchByValidKeywordRepeatedly" time="8.532" />
+  <testcase classname="sprint1.TourCatalogTest" name="testNotNull" time="6.537" />
   <system-out><![CDATA[Connected to database using TourDAO.java
 Connected to database using TourDAO.java
 length of distinct list is 7
@@ -386,7 +421,76 @@ length of distinct list is 7
 Connected to database using TourDAO.java
 Connected to database using TourDAO.java
 length of distinct list is 7
+Sat Apr 01 00:00:00 GMT 11290
+Wed Apr 05 00:00:00 GMT 11290
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Sat Apr 01 00:00:00 GMT 11290
+Tue May 07 00:00:00 GMT 2019
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Sun May 05 00:00:00 GMT 2019
+Tue May 07 00:00:00 GMT 2019
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Sun May 05 00:00:00 GMT 2019
+Tue May 07 00:00:00 GMT 2019
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
+Connected to database using TourDAO.java
+Connected to database using TourDAO.java
+length of distinct list is 7
 ]]></system-out>
-  <system-err><![CDATA[Parse Exception thrown in TourCatalog.getToursBySearchParameters
+  <system-err><![CDATA[ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
+ParseException thrown in TourCatalog.getToursBySearchParameters()
 ]]></system-err>
 </testsuite>

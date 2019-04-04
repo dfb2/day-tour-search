@@ -20,13 +20,19 @@
       </ScrollPane>
       <ToolBar prefHeight="50.0" prefWidth="1000.0">
         <items>
-            <TextField fx:id="searchField" prefHeight="40.0" prefWidth="200.0" text="Search..." />
-            <DatePicker fx:id="dateFromField" editable="false" onAction="#storeSelectedFromDate" prefHeight="40.0" prefWidth="150.0" promptText="From" />
-            <DatePicker fx:id="dateToField" editable="false" onAction="#storeSelectedToDate" prefHeight="40.0" prefWidth="150.0" promptText="To" />
-            <SplitMenuButton mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="1 Passenger">
+            <TextField fx:id="searchField" prefHeight="40.0" prefWidth="200.0" promptText="Search..." />
+            <DatePicker fx:id="dateFromField" editable="false" prefHeight="40.0" prefWidth="150.0" promptText="From" />
+            <DatePicker fx:id="dateToField" editable="false" prefHeight="40.0" prefWidth="150.0" promptText="To" />
+            <SplitMenuButton fx:id="PassengerSplitMenu" mnemonicParsing="false" prefHeight="40.0" prefWidth="110.0" text="1 Passenger">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
+                <MenuItem fx:id="passengerMenuItem1" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="1" />
+                <MenuItem fx:id="passengerMenuItem2" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="2" />
+                  <MenuItem fx:id="passengerMenuItem3" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="3" />
+                  <MenuItem fx:id="passengerMenuItem4" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="4" />
+                  <MenuItem fx:id="passengerMenuItem5" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="5" />
+                  <MenuItem fx:id="passengerMenuItem6" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="6" />
+                  <MenuItem fx:id="passengerMenuItem7" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="7" />
+                  <MenuItem fx:id="passengerMenuItem8" mnemonicParsing="false" onAction="#storeCurrentPassengers" text="8" />
               </items>
             </SplitMenuButton>
             <Button mnemonicParsing="false" onAction="#searchForTours" prefHeight="40.0" prefWidth="200.0" text="Search" />

@@ -2,13 +2,17 @@ package en.hi.dtsapp.view;
 
 import en.hi.dtsapp.controller.TourCatalog;
 import en.hi.dtsapp.model.Tour;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
@@ -36,9 +40,11 @@ public class BrowseToursController implements Initializable {
     private TourCatalog tourCatalog;
     private ObservableList<Tour> tourList;
     @FXML
-    private MenuItem passengerMenuItem1, passengerMenuItem2, passengerMenuItem3, passengerMenuItem4;
+    private MenuItem passengerMenuItem1, passengerMenuItem2, 
+            passengerMenuItem3, passengerMenuItem4;
     @FXML
-    private MenuItem passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8;
+    private MenuItem passengerMenuItem5, passengerMenuItem6, 
+            passengerMenuItem7, passengerMenuItem8;
     private MenuItem[] PassengerMenuItems;
     private int selectedPassengers;
     @FXML
@@ -63,8 +69,7 @@ public class BrowseToursController implements Initializable {
             passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8
         };
         selectedPassengers = 1;
-    }
-    
+    } 
     @FXML
     private void browseDistinctTours() {
         tourListView.setItems(tourCatalog.getDistinctNameTourList());
@@ -80,7 +85,7 @@ public class BrowseToursController implements Initializable {
         if ( (searchField.getText().isEmpty() || searchField.getText().contains("Search"))
                 && dateFrom == LocalDate.now() && dateTo == LocalDate.MAX) {
             searchField.setPromptText("Search...");
-            tourList = tourCatalog.getFullTourList();
+            // tourList = tourCatalog.getFullTourList();
             tourListView.setItems(tourList);
         } else {
             ObservableList<Tour> filteredList = 
@@ -118,5 +123,32 @@ public class BrowseToursController implements Initializable {
         try{ dateFrom=null; dateFromField.setValue(null); } catch(NullPointerException e) { dateFrom=null; dateFromField.setValue(null);}
         setCurrentPassengers(1);
         searchForTours();
+    }
+
+    @FXML
+    private void bookSelectedTour(ActionEvent event) {
+        // Update tourListView to show all tours
+        tourListView.setItems(tourList);
+        
+        System.out.println("Booked a tour");
+        System.out.print("Name: ");
+        System.out.print(tourListView.getSelectionModel().getSelectedItem().
+                getName());
+        System.out.print("Number of passengers before booking: ");
+        System.out.println(tourListView.getSelectionModel().
+                getSelectedItem().getTravelers());
+        
+        // Update the number of passengers in the ListView
+        tourListView.getSelectionModel().getSelectedItem().setTravelers(
+                String.valueOf(selectedPassengers));
+        // Print the current number of passenger for the
+        // selected Tour
+          System.out.print("Number of passengers after booking: ");
+        System.out.println(tourListView.getSelectionModel().
+                getSelectedItem().getTravelers());
+        
+        // Update the tourList with the number of passengers in the ListView
+        tourList = tourListView.getItems();
+
     }
 }

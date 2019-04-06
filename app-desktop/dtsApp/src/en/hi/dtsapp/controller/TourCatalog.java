@@ -44,6 +44,7 @@ public class TourCatalog {
     public TourCatalog() throws Exception {
         this.TOUR_LIST = TourDAO.initiateTourCatalog();
         this.DISTINCT_NAME_TOUR_LIST = TourDAO.distinctTourCatalog();
+        displaySomeTours();
     }
     
     public ObservableList<Tour> getFullTourList() {
@@ -95,8 +96,8 @@ public class TourCatalog {
    
     private void displaySomeTours() {     // Basically a test method
         System.out.println("Displaying some Tours:");
-        System.out.println(TOUR_LIST.get(10));
-        System.out.println(TOUR_LIST.get(100));
-        System.out.println(TOUR_LIST.get(700));
+        System.out.println(TOUR_LIST.get(10).getStartTime());
+        System.out.println(TOUR_LIST.get(100).getStartTime());
+        System.out.println(TOUR_LIST.get(700).getStartTime());
     }
 }

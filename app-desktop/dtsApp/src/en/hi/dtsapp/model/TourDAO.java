@@ -36,6 +36,7 @@ public class TourDAO implements DAO {
             Statement stmt = conn.createStatement();
             String s = "select * from tour";
             ResultSet rs = stmt.executeQuery(s);
+            System.out.println("Fetched rs");
             while (rs.next()) { // Make tours from each line. This is effectively the "createTour()" method
                 Tour tour = new Tour(
                         rs.getString(1),
@@ -51,6 +52,7 @@ public class TourDAO implements DAO {
                         rs.getString(11),
                         rs.getString(12));
                 tourList.add(tour);
+                System.out.println("created a tour");
             }
         }
         catch(SQLException e) {

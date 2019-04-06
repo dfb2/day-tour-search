@@ -49,7 +49,7 @@ CREATE TABLE CUSTOMER
 -- Taflan Booking inniheldur eftirfarandi upplýsingar um bókanir í dagsferðir:
 -- Netfang þess sem bókar (CustomerUserID)
 -- Fjölda farþega (Travellers)
-CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
+CREATE TABLE BOOKING
     ( CustomerEmail varchar(20) references CUSTOMER(CustomerUserID)
     , TourName varchar(30) references Tour(TourName)
     , TourOperator varchar(30) references Tour(TourOperator)
@@ -58,7 +58,7 @@ CREATE TABLE BOOKING                        -- Spurning hvort thurfi primary key
     , TourDate char(8) references Tour(TourDate)
     , Travellers int not null
     , constraint BookingID primary key(CustomerEmail, TourName, 
-      TourOperator, TourLocation, TourStartTime, TourDate) -- Hver viðskiptavinur getur þá bara átt eina virka bókun í hverjum tour
+      TourOperator, TourLocation, TourStartTime, TourDate)
     );
 
 CREATE TABLE REVIEW 

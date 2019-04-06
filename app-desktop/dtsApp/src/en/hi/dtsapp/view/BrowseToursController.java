@@ -6,6 +6,8 @@ import en.hi.dtsapp.model.DAOs.CustomerDAO;
 import en.hi.dtsapp.model.Tour;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +30,8 @@ import java.util.List;
  */
 public class BrowseToursController implements Initializable {
     
+    String[] kwEx = {"Search", "Type keywords here or pick dates", "Search..."};
+    private List<String> KeywordExceptions;
     private List<CustomerPerson> customerPersonCatalog;
     private final CustomerPerson customerPerson = new CustomerPerson(
             "DummyCustomer",
@@ -35,6 +39,8 @@ public class BrowseToursController implements Initializable {
              "dummyPassword");
     @FXML
     private ListView<Tour> tourListView;
+    private TourCatalog tourCatalog;
+    private ObservableList<Tour> tourList;
     @FXML
     private TextField searchField;
     
@@ -42,8 +48,6 @@ public class BrowseToursController implements Initializable {
     private DatePicker dateFromField, dateToField;
     private LocalDate dateFrom, dateTo;
     
-    private TourCatalog tourCatalog;
-    private ObservableList<Tour> tourList;
     @FXML
     private MenuItem passengerMenuItem1, passengerMenuItem2, 
             passengerMenuItem3, passengerMenuItem4,
@@ -57,6 +61,8 @@ public class BrowseToursController implements Initializable {
     
     /**
      * Initializes the controller class.
+     * TourCatalog should be a class with methods to retrieve lists of Tour objects
+     * Sets the ListView with items from TourCatalog.getFullTourList()
      * @param url
      * @param rb
      */
@@ -74,19 +80,25 @@ public class BrowseToursController implements Initializable {
             passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8
         };
         setCurrentPassengers(1);
+        KeywordExceptions = new ArrayList<String>(Arrays.asList(kwEx));
+        
         try {
             customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
         } catch (Exception ex) {
             System.out.println("Failed to initialize customerPersonCatalog in BrowseToursController");
         }
     } 
+    
+    // Reacts to Browse Distinct button being pressed by User
     @FXML
     private void browseDistinctTours() {
         tourListView.setItems(tourCatalog.getDistinctNameTourList());
         tourListView.getSelectionModel().selectFirst(); 
     }
     
-    @FXML // Passar upp á NullPointerExceptions og tóm input
+    // React to SearchForTours button being pressed by User
+    // Takes care of some NullPointerExceptions and empty inputs
+    @FXML
     private void searchForTours() {
         if(dateFromField.getValue() == null) dateFrom = LocalDate.now(); 
         else dateFrom = dateFromField.getValue();
@@ -99,7 +111,7 @@ public class BrowseToursController implements Initializable {
             tourListView.setItems(tourList);
         } else {
             ObservableList<Tour> filteredList = 
-                    tourCatalog.getToursBySearchParameters(searchField.getText(), dateFrom, dateTo);
+                    tourCatalog.getToursBySearchParameters(searchField.getText(), dateFrom, dateTo, KeywordExceptions);
             tourListView.setItems(filteredList);
         }
         tourListView.getSelectionModel().selectFirst(); 
@@ -143,9 +155,8 @@ public class BrowseToursController implements Initializable {
         if(tourListView.getSelectionModel().getSelectedItem() == null) return;
         // Update the actual tour in the tour catalog
         Tour tour = tourListView.getSelectionModel().getSelectedItem();
-        tourCatalog.bookTour(tour, selectedPassengers);
+        int result = tourCatalog.bookTour(customerPerson, tour, selectedPassengers);
         // And refresh the information in the listView
-        System.out.println(customerPerson.getName().concat(" wants to book tour:"));
         tourListView.refresh();
     }
 }

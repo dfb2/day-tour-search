@@ -142,8 +142,10 @@ public class Tour { // implements equals() defined by database primary key
 
     @Override
     public boolean equals(Object o) {
-        if (o == this)      return true; 
-        if (!(o instanceof Tour))    return false;
+        if (o == this)
+            return true; 
+        if (!(o instanceof Tour)) 
+            return false;
         Tour t = (Tour)o;
         return this.hashCode() == t.hashCode();
     }

@@ -1,9 +1,9 @@
 package en.hi.dtsapp.model;
 
+import en.hi.dtsapp.model.DAOs.DTSMethods;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -67,6 +67,10 @@ public class Tour { // implements equals() defined by database primary key
         sb = sb.append(this.getStartTime().toString());
         sb = sb.append(" o'clock, on date: ");
         sb = sb.append(this.getDate().toString());
+        sb = sb.append(". Passengers: ");
+        sb = sb.append(String.valueOf(this.getTravelers()));
+        sb = sb.append("/");
+        sb = sb.append(String.valueOf(this.getMaxTravelers()));
         return sb.toString();
     }
 
@@ -97,7 +101,7 @@ public class Tour { // implements equals() defined by database primary key
     public LocalTime getStartTime() {
         return startTime;
     }
-
+    
     /**
      * @return the endTime
      */
@@ -156,16 +160,23 @@ public class Tour { // implements equals() defined by database primary key
 
     /**
      * @param travelers the travelers to set
-     */
-    private void setTravelers(int travelers) {
-        this.travelers = travelers;
+     * @return true if new amount of travelers is less than this.getMaxTravelers()
+    */
+    private boolean setTravelers(int travelers) {
+        if(travelers <= this.getMaxTravelers()){
+            this.travelers = travelers;
+            return true;
+        }
+        System.out.println("Did not add Traveler in Tour.setTravelers because bookings exceed MaxTravelers");
+        return false;
     }
 
     /**
      * @param travelers the travelers to set
+     * @return true if this.setTravelers(this.getTravelers()+travelers) returns true
      */
-    public void addTravelers(int travelers) {
-        this.setTravelers(this.getTravelers()+travelers);
+    public boolean addTravelers(int travelers) {
+        return this.setTravelers(this.getTravelers()+travelers);
     }
     
     @Override

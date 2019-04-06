@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package en.hi.dtsapp.model;
+package en.hi.dtsapp.model.DAOs;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +18,12 @@ import java.time.format.DateTimeFormatter;
  * Háskóli Íslands
  */
 public class DTSMethods {
+    
+    // Returns True if Input is bad
+    public static boolean isBadInput(String input){
+        return (input.contains("'") || input.contains(";") || input.contains("\"")
+                 || input.trim().equals("") || input == null);
+    }
 
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
     public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmm");

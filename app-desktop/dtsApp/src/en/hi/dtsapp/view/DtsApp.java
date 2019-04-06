@@ -1,6 +1,6 @@
 package en.hi.dtsapp.view;
 
-import en.hi.dtsapp.model.TourDAO;
+import en.hi.dtsapp.model.DAOs.TourDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

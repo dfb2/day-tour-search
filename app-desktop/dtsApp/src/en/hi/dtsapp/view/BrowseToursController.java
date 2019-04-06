@@ -1,9 +1,13 @@
 package en.hi.dtsapp.view;
 
+import en.hi.dtsapp.model.CustomerPerson;
 import en.hi.dtsapp.controller.TourCatalog;
+import en.hi.dtsapp.model.DAOs.CustomerDAO;
 import en.hi.dtsapp.model.Tour;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +18,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
+import java.util.List;
+
 
 /**
  * FXML Controller class
@@ -24,8 +30,17 @@ import javafx.scene.control.TextField;
  */
 public class BrowseToursController implements Initializable {
     
+    String[] kwEx = {"Search", "Type keywords here or pick dates", "Search..."};
+    private List<String> KeywordExceptions;
+    private List<CustomerPerson> customerPersonCatalog;
+    private final CustomerPerson customerPerson = new CustomerPerson(
+            "DummyCustomer",
+            "dummyCustomer@hi.is",
+             "dummyPassword");
     @FXML
     private ListView<Tour> tourListView;
+    private TourCatalog tourCatalog;
+    private ObservableList<Tour> tourList;
     @FXML
     private TextField searchField;
     
@@ -33,8 +48,6 @@ public class BrowseToursController implements Initializable {
     private DatePicker dateFromField, dateToField;
     private LocalDate dateFrom, dateTo;
     
-    private TourCatalog tourCatalog;
-    private ObservableList<Tour> tourList;
     @FXML
     private MenuItem passengerMenuItem1, passengerMenuItem2, 
             passengerMenuItem3, passengerMenuItem4,
@@ -45,8 +58,11 @@ public class BrowseToursController implements Initializable {
     @FXML
     private SplitMenuButton PassengerSplitMenu;
     
+    
     /**
      * Initializes the controller class.
+     * TourCatalog should be a class with methods to retrieve lists of Tour objects
+     * Sets the ListView with items from TourCatalog.getFullTourList()
      * @param url
      * @param rb
      */
@@ -63,16 +79,27 @@ public class BrowseToursController implements Initializable {
             passengerMenuItem1, passengerMenuItem2, passengerMenuItem3, passengerMenuItem4,
             passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8
         };
-        selectedPassengers = 1;
+        setCurrentPassengers(1);
+        KeywordExceptions = new ArrayList<String>(Arrays.asList(kwEx));
+        
+        try {
+            customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
+        } catch (Exception ex) {
+            System.out.println("Failed to initialize customerPersonCatalog in BrowseToursController");
+        }
     } 
+    
+    // Reacts to Browse Distinct button being pressed by User
     @FXML
     private void browseDistinctTours() {
         tourListView.setItems(tourCatalog.getDistinctNameTourList());
+        tourListView.getSelectionModel().selectFirst(); 
     }
     
-    @FXML // Passar upp á NullPointerExceptions og tóm input
+    // React to SearchForTours button being pressed by User
+    // Takes care of some NullPointerExceptions and empty inputs
+    @FXML
     private void searchForTours() {
-        // DTSMethods.DATE_FORMATTER();
         if(dateFromField.getValue() == null) dateFrom = LocalDate.now(); 
         else dateFrom = dateFromField.getValue();
         if(dateToField.getValue() == null) dateTo = LocalDate.MAX;
@@ -84,9 +111,10 @@ public class BrowseToursController implements Initializable {
             tourListView.setItems(tourList);
         } else {
             ObservableList<Tour> filteredList = 
-                    tourCatalog.getToursBySearchParameters(searchField.getText(), dateFrom, dateTo);
+                    tourCatalog.getToursBySearchParameters(searchField.getText(), dateFrom, dateTo, KeywordExceptions);
             tourListView.setItems(filteredList);
         }
+        tourListView.getSelectionModel().selectFirst(); 
     }
 
     @FXML // Reacts to number of passengers being selected from drop-down menu
@@ -113,6 +141,7 @@ public class BrowseToursController implements Initializable {
 
     @FXML
     private void clearSearchParameters() {
+        searchField.setText("");
         searchField.setPromptText("Search...");
         try{ dateTo=null; dateToField.setValue(null); } catch(NullPointerException e) { dateTo=null; dateToField.setValue(null);}
         try{ dateFrom=null; dateFromField.setValue(null); } catch(NullPointerException e) { dateFrom=null; dateFromField.setValue(null);}
@@ -120,30 +149,14 @@ public class BrowseToursController implements Initializable {
         searchForTours();
     }
 
-    @FXML
-    private void bookSelectedTour(ActionEvent event) {
-        // Update tourListView to show all tours
-    //    tourListView.setItems(tourList);
-        
-        System.out.println("Booked a tour");
-        System.out.print("Name: ");
-        System.out.print(tourListView.getSelectionModel().getSelectedItem().
-                getName());
-        System.out.print("\n Number of passengers before booking: ");
-        System.out.println(tourListView.getSelectionModel().
-                getSelectedItem().getTravelers());
-        
-        // Update the number of passengers in the ListView
-        tourListView.getSelectionModel().getSelectedItem().addTravelers(
-                selectedPassengers);
-        // Print the current number of passenger for the
-        // selected Tour
-          System.out.print("Number of passengers after booking: ");
-        System.out.println(tourListView.getSelectionModel().
-                getSelectedItem().getTravelers());
-        
-        // Update the tourList with the number of passengers in the ListView
-        tourList = tourListView.getItems();
 
+    @FXML // Responds to the event of a user clicking the Book Selected Tour button
+    private void bookSelectedTour(ActionEvent event) {
+        if(tourListView.getSelectionModel().getSelectedItem() == null) return;
+        // Update the actual tour in the tour catalog
+        Tour tour = tourListView.getSelectionModel().getSelectedItem();
+        int result = tourCatalog.bookTour(customerPerson, tour, selectedPassengers);
+        // And refresh the information in the listView
+        tourListView.refresh();
     }
 }

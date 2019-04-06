@@ -1,5 +1,6 @@
-package en.hi.dtsapp.model;
+package en.hi.dtsapp.model.DAOs;
 
+import en.hi.dtsapp.model.Tour;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -36,7 +37,6 @@ public class TourDAO implements DAO {
             Statement stmt = conn.createStatement();
             String s = "select * from tour";
             ResultSet rs = stmt.executeQuery(s);
-            System.out.println("Fetched rs");
             while (rs.next()) { // Make tours from each line. This is effectively the "createTour()" method
                 Tour tour = new Tour(
                         rs.getString(1),
@@ -52,7 +52,6 @@ public class TourDAO implements DAO {
                         rs.getString(11),
                         rs.getString(12));
                 tourList.add(tour);
-                System.out.println("created a tour");
             }
         }
         catch(SQLException e) {
@@ -60,15 +59,6 @@ public class TourDAO implements DAO {
         }
         List<Tour> immutableList = Collections.unmodifiableList(tourList);
         return immutableList; 
-    }
-    
-    
-    public static void main() throws Exception {
-        long t0 = System.nanoTime();
-        List<Tour> immutableList = initiateTourCatalog();
-        long t1 = System.nanoTime();
-        System.out.println("Length of immutable List is " + immutableList.size());
-        System.out.println("Fetching tours and creating immutable list took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
     }
 
     public static List<Tour> distinctTourCatalog() throws Exception {
@@ -111,5 +101,14 @@ public class TourDAO implements DAO {
         List<Tour> immutableList = Collections.unmodifiableList(tourList);
         System.out.println("length of distinct list is " + immutableList.size());
         return immutableList; 
+    }
+    
+    
+    public static void main() throws Exception {
+        long t0 = System.nanoTime();
+        List<Tour> immutableList = initiateTourCatalog();
+        long t1 = System.nanoTime();
+        System.out.println("Length of immutable List is " + immutableList.size());
+        System.out.println("Fetching tours and creating immutable list took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
     }
 }

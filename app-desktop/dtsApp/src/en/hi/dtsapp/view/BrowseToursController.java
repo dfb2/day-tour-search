@@ -29,6 +29,10 @@ import java.util.List;
 public class BrowseToursController implements Initializable {
     
     private List<CustomerPerson> customerPersonCatalog;
+    private final CustomerPerson customerPerson = new CustomerPerson(
+            "DummyCustomer",
+            "dummyCustomer@hi.is",
+             "dummyPassword");
     @FXML
     private ListView<Tour> tourListView;
     @FXML
@@ -133,14 +137,15 @@ public class BrowseToursController implements Initializable {
         searchForTours();
     }
 
-    @FXML
+
+    @FXML // Responds to the event of a user clicking the Book Selected Tour button
     private void bookSelectedTour(ActionEvent event) {
-        // Update tourListView to show all tours
         if(tourListView.getSelectionModel().getSelectedItem() == null) return;
         // Update the actual tour in the tour catalog
         Tour tour = tourListView.getSelectionModel().getSelectedItem();
         tourCatalog.bookTour(tour, selectedPassengers);
         // And refresh the information in the listView
+        System.out.println(customerPerson.getName().concat(" wants to book tour:"));
         tourListView.refresh();
     }
 }

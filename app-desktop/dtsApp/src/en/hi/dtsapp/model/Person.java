@@ -9,7 +9,7 @@ import java.util.Objects;
 public abstract class Person {
     private final String name, password, email;
     
-    public Person(String name, String password, String email){
+    public Person(String name, String email, String password){
         this.name = name;
         this.password  = password;
         this.email = email;
@@ -26,5 +26,4 @@ public abstract class Person {
     private String getPassword(){
         return this.password;
     }
-
 }

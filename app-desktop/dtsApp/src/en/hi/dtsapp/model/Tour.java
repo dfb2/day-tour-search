@@ -1,5 +1,6 @@
 package en.hi.dtsapp.model;
 
+import en.hi.dtsapp.model.DAOs.DTSMethods;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;

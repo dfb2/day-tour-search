@@ -101,17 +101,22 @@ public class TourCatalog {
         System.out.println(TOUR_LIST.get(700).getStartTime());
     }
     
-    public void bookTour(Tour tour, int passengers){
+    
+    public boolean bookTour(Tour tour, int passengers){
         int i = this.TOUR_LIST.indexOf(tour);
         if(i!=-1){
             this.TOUR_LIST.get(i).addTravelers(passengers);
             System.out.println(this.TOUR_LIST.get(i).getTravelers());
         }
-        else System.out.println("Tour not in TourCatalog.TOUR_LIST. Didn't update booking.");
+        else{
+            System.out.println("Tour not in TourCatalog.TOUR_LIST. Didn't update booking.");
+            return false;
+        }
         i = this.DISTINCT_NAME_TOUR_LIST.indexOf(tour);
         if(i!=-1){
             this.DISTINCT_NAME_TOUR_LIST.get(i).addTravelers(passengers);
         }
         else System.out.println("Tour not in TourCatalog.DISTINCT_NAME_TOUR_LIST. Didn't update booking there.");
+        return true;
     }
 }

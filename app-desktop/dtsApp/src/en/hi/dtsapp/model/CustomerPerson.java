@@ -29,6 +29,12 @@ public class CustomerPerson extends Person {
         return hash;
     }
     
+    @Override
+    public String toString(){
+        String s = this.getName().concat(" - ").concat(this.getEmail());
+        return s;
+    }
+    
 
 
     

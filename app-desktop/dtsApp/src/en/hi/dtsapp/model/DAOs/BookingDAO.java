@@ -69,7 +69,7 @@ public class BookingDAO implements DAO {
         if(DTSMethods.isBadInput(tourDate)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -7; }
         if(DTSMethods.isBadInput(travelers)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -8; }
 
-        customerEmail = customerEmail.trim(); // should use an array... lol
+        customerEmail = customerEmail.trim(); 
         tourName = tourName.trim();
         tourOperator = tourOperator.trim();
         tourLocation = tourLocation.trim();

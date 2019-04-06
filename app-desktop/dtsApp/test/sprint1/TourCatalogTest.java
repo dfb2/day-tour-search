@@ -1,6 +1,7 @@
 package sprint1;
 
 import en.hi.dtsapp.controller.TourCatalog;
+import static en.hi.dtsapp.model.DAOs.BookingDAO.deleteBookings;
 import en.hi.dtsapp.model.DAOs.DTSMethods;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -25,7 +26,7 @@ public class TourCatalogTest {
     private String validKeyword1, invalidKeyword1;
     private String validKeyword2, invalidKeyword2;
     private LocalDate validDate2From, validDate2To, invalidDate2From, invalidDate2To;
-    private List<String> keywordExceptions = Arrays.asList("test1", "test2", "test3");
+    private final List<String> keywordExceptions = Arrays.asList("test1", "test2", "test3");
             
     @Before
     public void setUp() throws Exception {
@@ -124,7 +125,8 @@ public class TourCatalogTest {
     public void testSearchByKeywordException() throws ParseException {
         assertEquals(tourCatalog.getToursBySearchParameters(
                 keywordExceptions.get(0), null, null, keywordExceptions),
-                tourCatalog.getFullTourList());
+                tourCatalog.getToursBySearchParameters(
+                "", null, null, keywordExceptions));
     }
     
     /*

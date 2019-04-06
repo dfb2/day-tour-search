@@ -189,6 +189,7 @@ public class BookingDAO implements DAO {
                 "Isafjordur Tours", "Isafjordur", "0900", "02062019","20"));
         long t1 = System.nanoTime();
         System.out.println("Inserting Dummy Booking took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
+        deleteBookings("dummyCustomer@hi.is");
         
     }
 }

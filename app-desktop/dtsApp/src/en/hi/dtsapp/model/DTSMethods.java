@@ -20,5 +20,6 @@ import java.time.format.DateTimeFormatter;
 public class DTSMethods {
 
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmm");
     public static final SimpleDateFormat SDF = new SimpleDateFormat("ddMMyyyy");
 }

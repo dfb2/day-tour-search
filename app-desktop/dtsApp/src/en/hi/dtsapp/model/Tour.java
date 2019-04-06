@@ -2,6 +2,8 @@ package en.hi.dtsapp.model;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -20,9 +22,11 @@ public class Tour { // implements equals() defined by database primary key
     
     
     private final String STANDARD_IMG = "C:\\Users\\Erling Oskar\\Documents\\hi\\v19\\hbv\\DayTourSearch\\app-desktop\\dtsApp\\src\\en\\hi\\dtsapp\\model\\img\\WOW_logo_RGB.jpg";
-    private final String name, operator, location, startTime, endTime, maxTravelers, price, info, keywords, img;
-    private String travelers;
+    private final String name, operator, location, info, keywords, img;
+    private final int maxTravelers, price;
+    private int travelers;
     private final LocalDate date;
+    private final LocalTime startTime, endTime;
 
     public Tour(String name, String operator, String location, String startTime, String endTime, String date,
             String travelers, String maxTravelers, String price, String info, String keywords, String img) throws ParseException {
@@ -30,15 +34,22 @@ public class Tour { // implements equals() defined by database primary key
         if (keywords == null) keywords = "";
         if (img == null) img = STANDARD_IMG;  // use a standard image that is stored locally+
         if (date == null || date.trim().equals("") || date.length() != 8) date = "01012019"; 
+        if (startTime == null || startTime.trim().equals("") 
+                || startTime.length() != 4) startTime = "0000"; 
+        if (endTime == null 
+                || endTime.trim().equals("") 
+                || endTime.length() != 4 
+                || Integer.parseInt(endTime) > 2359) endTime = "2359"; 
+        
         this.date = LocalDate.parse(date, DTSMethods.DATE_FORMATTER);
         this.name = name;
         this.operator = operator;
         this.location = location;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.travelers = travelers;
-        this.maxTravelers = maxTravelers;
-        this.price = price;
+        this.startTime = LocalTime.parse(startTime.trim(), DTSMethods.TIME_FORMATTER); 
+        this.endTime = LocalTime.parse(endTime, DTSMethods.TIME_FORMATTER);
+        this.travelers = Integer.parseInt(travelers);
+        this.maxTravelers = Integer.parseInt(maxTravelers);
+        this.price = Integer.parseInt(price);
         this.img = img;
         this.keywords = keywords;
         this.info = info;
@@ -46,7 +57,17 @@ public class Tour { // implements equals() defined by database primary key
 
     @Override
     public String toString() {
-        return getName();
+        StringBuilder sb = new StringBuilder();
+        sb = sb.append(this.getName());
+        sb = sb.append(", operated by ");
+        sb = sb.append(this.getOperator());
+        sb = sb.append(", departs from ");
+        sb = sb.append(this.getLocation());
+        sb = sb.append(" at ");
+        sb = sb.append(this.getStartTime().toString());
+        sb = sb.append(" o'clock, on date: ");
+        sb = sb.append(this.getDate().toString());
+        return sb.toString();
     }
 
     /**
@@ -73,14 +94,14 @@ public class Tour { // implements equals() defined by database primary key
     /**
      * @return the startTime
      */
-    public String getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
     /**
      * @return the endTime
      */
-    public String getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
@@ -94,14 +115,14 @@ public class Tour { // implements equals() defined by database primary key
     /**
      * @return the maxTravelers
      */
-    public String getMaxTravelers() {
+    public int getMaxTravelers() {
         return maxTravelers;
     }
 
     /**
      * @return the price
      */
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
@@ -129,17 +150,24 @@ public class Tour { // implements equals() defined by database primary key
     /**
      * @return the travelers
      */
-    public String getTravelers() {
+    public int getTravelers() {
         return travelers;
     }
 
     /**
      * @param travelers the travelers to set
      */
-    public void setTravelers(String travelers) {
+    private void setTravelers(int travelers) {
         this.travelers = travelers;
     }
 
+    /**
+     * @param travelers the travelers to set
+     */
+    public void addTravelers(int travelers) {
+        this.setTravelers(this.getTravelers()+travelers);
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (o == this)

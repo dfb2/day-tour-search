@@ -101,7 +101,7 @@ public class Tour { // implements equals() defined by database primary key
     public LocalTime getStartTime() {
         return startTime;
     }
-
+    
     /**
      * @return the endTime
      */
@@ -160,17 +160,23 @@ public class Tour { // implements equals() defined by database primary key
 
     /**
      * @param travelers the travelers to set
-     */
-    private void setTravelers(int travelers) {
-        if(travelers <= this.getMaxTravelers()) this.travelers = travelers;
-        else System.out.println("Did not add Traveler in Tour.setTravelers because bookings exceed MaxTravelers");
+     * @return true if new amount of travelers is less than this.getMaxTravelers()
+    */
+    private boolean setTravelers(int travelers) {
+        if(travelers <= this.getMaxTravelers()){
+            this.travelers = travelers;
+            return true;
+        }
+        System.out.println("Did not add Traveler in Tour.setTravelers because bookings exceed MaxTravelers");
+        return false;
     }
 
     /**
      * @param travelers the travelers to set
+     * @return true if this.setTravelers(this.getTravelers()+travelers) returns true
      */
-    public void addTravelers(int travelers) {
-        this.setTravelers(this.getTravelers()+travelers);
+    public boolean addTravelers(int travelers) {
+        return this.setTravelers(this.getTravelers()+travelers);
     }
     
     @Override

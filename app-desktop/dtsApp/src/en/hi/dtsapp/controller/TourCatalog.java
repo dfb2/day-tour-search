@@ -1,7 +1,7 @@
 package en.hi.dtsapp.controller;
 
 import en.hi.dtsapp.model.Tour;
-import en.hi.dtsapp.model.TourDAO;
+import en.hi.dtsapp.model.DAOs.TourDAO;
 import java.time.LocalDate;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -99,5 +99,19 @@ public class TourCatalog {
         System.out.println(TOUR_LIST.get(10).getStartTime());
         System.out.println(TOUR_LIST.get(100).getStartTime());
         System.out.println(TOUR_LIST.get(700).getStartTime());
+    }
+    
+    public void bookTour(Tour tour, int passengers){
+        int i = this.TOUR_LIST.indexOf(tour);
+        if(i!=-1){
+            this.TOUR_LIST.get(i).addTravelers(passengers);
+            System.out.println(this.TOUR_LIST.get(i).getTravelers());
+        }
+        else System.out.println("Tour not in TourCatalog.TOUR_LIST. Didn't update booking.");
+        i = this.DISTINCT_NAME_TOUR_LIST.indexOf(tour);
+        if(i!=-1){
+            this.DISTINCT_NAME_TOUR_LIST.get(i).addTravelers(passengers);
+        }
+        else System.out.println("Tour not in TourCatalog.DISTINCT_NAME_TOUR_LIST. Didn't update booking there.");
     }
 }

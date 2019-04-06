@@ -1,4 +1,4 @@
-package en.hi.dtsapp.model;
+package en.hi.dtsapp.model.DAOs;
 
 /**
  *

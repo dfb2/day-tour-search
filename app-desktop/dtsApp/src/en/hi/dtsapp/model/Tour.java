@@ -3,7 +3,6 @@ package en.hi.dtsapp.model;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
@@ -67,6 +66,10 @@ public class Tour { // implements equals() defined by database primary key
         sb = sb.append(this.getStartTime().toString());
         sb = sb.append(" o'clock, on date: ");
         sb = sb.append(this.getDate().toString());
+        sb = sb.append(". Passengers: ");
+        sb = sb.append(String.valueOf(this.getTravelers()));
+        sb = sb.append("/");
+        sb = sb.append(String.valueOf(this.getMaxTravelers()));
         return sb.toString();
     }
 
@@ -158,7 +161,8 @@ public class Tour { // implements equals() defined by database primary key
      * @param travelers the travelers to set
      */
     private void setTravelers(int travelers) {
-        this.travelers = travelers;
+        if(travelers <= this.getMaxTravelers()) this.travelers = travelers;
+        else System.out.println("Did not add Traveler in Tour.setTravelers because bookings exceed MaxTravelers");
     }
 
     /**

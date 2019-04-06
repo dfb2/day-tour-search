@@ -18,7 +18,11 @@ Made the following classes:
     See documentation for this method.
 -   deleteBookings() takes 1 String parameters: customerEmail, and deletes all his bookings.
     For security purposes we might add password here later. But this is a convenience method for now,
-    can be used to delete bookings by this dummy customerPerson.
+    can be used to delete bookings by this dummy customerPerson, because a constraint on the database
+    prohibits a Customer from booking the exact same Tour (exact by primary key in Tour table).
+        insertBooking() does however have an option to deal with such failed updates.
+        It returns a specific negative integer that can help the user of the method (programmer) decide
+        what error message to display to the user of the program.
 3 abstract Person to be extended by 4 and 5
 -   Constructor and getter for name, email and password
 4 CustomerPerson extends Person, implements equals, 

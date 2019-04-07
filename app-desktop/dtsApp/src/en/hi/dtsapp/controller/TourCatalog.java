@@ -21,11 +21,11 @@ import javafx.collections.ObservableList;
  *          TOUR_LIST contains every single Tour from the Tour database
  *          DISTINCT_NAME_TOUR_LIST contains only one of each (by name, i.e. no repetitions of the same tour on other dates)
  * 
- *       public ObservableList<Tour> getFullTourList() 
- *          returns an ObserveableList copy of TOUR_LIST . Every single tour from the database
+ *       public ObservableList getFullTourList() 
+ *          returns an ObserveableList copy of TOUR_LIST which contains every single tour from the database
  * 
- *      public ObservableList<Tour> getDistinctNameTourList()
- *          returns an ObserveableList copy of DISTINCT_NAME_TOUR_LIST (for easy viewing)
+ *      public ObservableList getDistinctNameTourList()
+ *          returns an ObserveableList copy of DISTINCT_NAME_TOUR_LIST (for easy browsing)
  * 
  ****************************************************************************************************************************
  *      There are two methods you will be using:
@@ -33,8 +33,10 @@ import javafx.collections.ObservableList;
  *          bookTour(..)
  *      see detailed documentation right below.
  ****************************************************************************************************************************
- * @author Erling Óskar Kristjánsson eok4@hi.is
- * Háskóli Íslands
+ * @author Erling Oskar Kristjansson eok4@hi.is
+ *         David Freyr Bjornsson dfb2@hi.is
+ *         Andrea Osk Sigurdardottir aos26@hi.is
+ * Haskoli Islands
  */
 public class TourCatalog {
     
@@ -65,11 +67,13 @@ public class TourCatalog {
      * @param dateTo LocalDate
      * @param keywordExceptions List of Strings 
      * @return ObservableList with all the tours in TOUR_LIST that are 
-     *          within the specified dates [dateFrom, dateTo], both included,
-     *          and have anything to do with the keyword, e.g. it's part of 
-     *          TourName, TourOperator, TourLocation, TourInfo or TourKeywords.
-     *        If the keyword is in keywordExceptions, it will not filter the list
-     *          (e.g. put UI SearchField prompt text into this List)
+     *      within the specified dates [dateFrom, dateTo], both included,
+     *      and have anything to do with any of the words in the String keyword,
+     *              e.g. it's part of TourName, TourOperator, 
+     *              TourLocation, TourInfo or TourKeywords.
+     *        If the String keyword is in keywordExceptions,
+     *          it will not filter the list
+     *          (e.g. put UI SearchField promptText into this List)
      *      Returns an empty list if DateTo is before DateFrom,
      *      Returns an empty list if keyword is just some nonsense
      */
@@ -125,7 +129,7 @@ public class TourCatalog {
             iTour = this.TOUR_LIST.get(i);
             b =  this.TOUR_LIST.get(i).addTravelers(passengers);
             if(b) {
-                System.out.println(iTour.getTravelers());
+            //    System.out.println(iTour.getTravelers());
                 try{
                     result = BookingDAO.insertBooking(
                         cp.getEmail(),
@@ -143,7 +147,7 @@ public class TourCatalog {
             }
         }
         else {
-            System.out.println("Tour not in TourCatalog.TOUR_LIST. Didn't update booking.");
+            System.err.println("Tour not in TourCatalog.TOUR_LIST. Didn't update booking.");
             return -10;
         }
         if(b && result == 1){
@@ -151,7 +155,7 @@ public class TourCatalog {
             if(j!=-1){
                 this.DISTINCT_NAME_TOUR_LIST.get(j).addTravelers(passengers);
             }
-            else System.out.println("Tour not in TourCatalog.DISTINCT_NAME_TOUR_LIST. Didn't update booking there.");
+        //    else System.out.println("Tour not in TourCatalog.DISTINCT_NAME_TOUR_LIST. Didn't update booking there.");
         }
         // Decrement the value of the TOUR_LIST again because we never should've incremented it in the first place
         if(b && result != 1 && i != -1 && iTour != null) b = iTour.addTravelers(-passengers);
@@ -164,12 +168,17 @@ public class TourCatalog {
     // returns the tours that are in fullTourList and have something to do with
     //          the keyword, e.g. it's part of TourName, TourOperator, TourLocation, TourInfo or TourKeywords
     private ObservableList<Tour> getToursByKeyword(ObservableList<Tour> fullTourList, String keyword) {
-            ObservableList <Tour> newTourList = fullTourList.filtered(
-                       s -> s.getKeywords().toLowerCase().contains(keyword) 
-                    || s.getName().toLowerCase().contains(keyword) 
-                    || s.getInfo().toLowerCase().contains(keyword) 
-                    || s.getLocation().toLowerCase().contains(keyword) 
-                    || s.getOperator().toLowerCase().contains(keyword) );
+            
+            ObservableList <Tour> newTourList = fullTourList; 
+            for(String kw: keyword.split(" ")){
+                newTourList = newTourList.filtered(
+                       s -> s.getKeywords().toLowerCase().contains(kw) 
+                    || s.getName().toLowerCase().contains(kw) 
+                    || s.getInfo().toLowerCase().contains(kw) 
+                    || s.getLocation().toLowerCase().contains(kw) 
+                    || s.getOperator().toLowerCase().contains(kw) );
+            }
+            
             return newTourList;
     }
 
@@ -180,7 +189,7 @@ public class TourCatalog {
              ObservableList<Tour> fullTourList, LocalDate dateFrom, LocalDate dateTo) {
          if(dateFrom == null) dateFrom = LocalDate.now(); // 3 unnecesary lines because this is a private function??
          if(dateTo == null) dateTo = LocalDate.MAX;
-         System.out.println(dateFrom.toString() + "\n"+ dateTo.toString());
+        // System.out.println(dateFrom.toString() + "\n"+ dateTo.toString());
          ObservableList  <Tour> newTourList = FXCollections.observableArrayList();
          for(Tour s: fullTourList) {
             LocalDate sDate = s.getDate();
@@ -190,7 +199,7 @@ public class TourCatalog {
          return newTourList;
     }
    
-    private void displaySomeTours() {     // Basically a test method
+    private void displaySomeTours() {     // Basically a test method.
         System.out.println("Displaying some Tours:");
         System.out.println(TOUR_LIST.get(10).getStartTime());
         System.out.println(TOUR_LIST.get(100).getStartTime());

@@ -11,11 +11,12 @@
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/controller/TourCatalog.java</file>
         </group>
         <group>
-            <file>file:/Users/davidfreyrbjornsson/Google%20Drive/Computer_Science/SoftwareDevelopment/day-tour-search/app-desktop/dtsApp/test/sprint1/TourCatalogTest.java</file>
-            <file>file:/Users/davidfreyrbjornsson/Google%20Drive/Computer_Science/SoftwareDevelopment/day-tour-search/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/BookingDAO.java</file>
-            <file>file:/Users/davidfreyrbjornsson/Google%20Drive/Computer_Science/SoftwareDevelopment/day-tour-search/app-desktop/dtsApp/test/sprint2/BookingDAOTest.java</file>
-            <file>file:/Users/davidfreyrbjornsson/Google%20Drive/Computer_Science/SoftwareDevelopment/day-tour-search/app-desktop/dtsApp/src/en/hi/dtsapp/controller/TourCatalog.java</file>
-            <file>file:/Users/davidfreyrbjornsson/Google%20Drive/Computer_Science/SoftwareDevelopment/day-tour-search/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/DTSMethods.java</file>
+            <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/controller/TourCatalog.java</file>
+            <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/DTSMethods.java</file>
+            <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/model/Tour.java</file>
+            <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/BookingDAO.java</file>
+            <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/view/BrowseToursController.java</file>
+            <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/view/DtsApp.java</file>
         </group>
     </open-files>
 </project-private>

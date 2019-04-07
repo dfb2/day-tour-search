@@ -17,10 +17,86 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
- * @author ellio
+ * create your own customer and insert it into the DB Table by using
+ *      public static int insertCustomer(..)
+ * retrieve a CustomerPerson List of all customers in DB using 
+ *      public static List initiateCustomerCatalog()
+ * @author Erling Oskar Kristjansson, eok4@hi.is
  */
 public class CustomerDAO implements DAO {
+    
+    /**
+     * Adds a new Customer to Customer Table
+     * @param name
+     * @param password
+     * @param email
+     * @return  1 if value was inserted
+     *          0 if value already in Customer table
+     *         -1 if failed to connect to database
+     *         -2 if bad name contains dubious characters
+     *         -3 if bad password contains dubious characters
+     *         -4 if bad email contains dubious characters
+     *         -5 if email already in Customer table
+     * @throws SQLException 
+     */
+    public static int insertCustomer(String name, String password, String email)  throws SQLException{
+        if(DTSMethods.isBadInput(name)) { System.err.println("bad name: " + name); return -2; }
+        if(DTSMethods.isBadInput(password)) { System.err.println("bad password: " + password); return -3; }
+        if(DTSMethods.isBadInput(email)) { System.err.println("bad email: " + password); return -4; }
+        name = name.trim();
+        password = password.trim();
+        email = email.trim();
+        
+        try {
+            Class.forName(DRIVER);
+        }
+        catch (ClassNotFoundException ex) {
+            System.err.println(ex.getMessage());
+            System.err.println("Failed to connect to driver in CustomerDAO.insertCustomer()");
+            return -1;
+        }
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected to database using CustomerDAO.insertCustomer()");
+            
+            // Make statement and insert customer
+            Statement stmt = conn.createStatement();
+            StringBuilder sb = new StringBuilder();
+            sb = sb.append("insert into customer values('");
+            sb = sb.append(name);
+            sb = sb.append("', '");
+            sb = sb.append(password);
+            sb = sb.append("', '");
+            sb = sb.append(email);
+            sb = sb.append("');");
+            String s = sb.toString();
+            try{
+                // System.out.println(s);
+                stmt.executeUpdate(s);
+            } catch (SQLIntegrityConstraintViolationException e){
+                System.err.println(e.getMessage());
+                System.err.println(
+                    "Tried to insert duplicate customer value with email ".concat(
+                    email).concat(", in CustomerDAO.insertCustomer()"));
+                ResultSet rs = stmt.executeQuery("select * from customer;");
+                while (rs.next()) { // Make customers from each line.
+                    if(rs.getString(2) == email && rs.getString(1) == name
+                            && rs.getString(3) == password) return 0;
+                    }
+                    return -5;
+            }
+            return 1;
+    }
+    
+
+    /**
+     * Performs "select * from customer" on DayTourSearch Database
+     * returns a list of CustomerPerson objects representing each DB entry
+     * Can thus potentially be used to check if a Customer already exists,
+     * rather than attempting to create one.
+     * 
+     * @return List
+     * @throws Exception various SQL, e.g. fails to connect or get driver.
+     */
     public static List<CustomerPerson> initiateCustomerCatalog() throws Exception {
         List<CustomerPerson> customerPersonList = new ArrayList<>();
         try {
@@ -53,66 +129,6 @@ public class CustomerDAO implements DAO {
         return immutableList; 
     }
     
-    /**
-     * Adds a new Customer to Customer Table
-     * @param name
-     * @param password
-     * @param email
-     * @return  1 if value was inserted
-     *          0 if value already in Customer table
-     *         -1 if failed to connect to database
-     *         -2 if bad name contains dubious characters
-     *         -3 if bad password contains dubious characters
-     *         -4 if bad email contains dubious characters
-     *         -5 if email already in Customer table
-     * @throws SQLException 
-     */
-    public static int insertCustomer(String name, String password, String email)  throws SQLException{
-        if(DTSMethods.isBadInput(name)) { System.out.println("bad name"); return -2; }
-        if(DTSMethods.isBadInput(password)) { System.out.println("bad password"); return -3; }
-        if(DTSMethods.isBadInput(email)) { System.out.println("bad email"); return -4; }
-        name = name.trim();
-        password = password.trim();
-        email = email.trim();
-        
-        try {
-            Class.forName(DRIVER);
-        }
-        catch (ClassNotFoundException ex) {
-            System.err.println(ex.getMessage());
-            System.err.println("Failed to connect to driver in CustomerDAO.insertCustomer()");
-            return -1;
-        }
-            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            System.out.println("Connected to database using CustomerDAO.insertCustomer()");
-            
-            // Make statement and insert customer
-            Statement stmt = conn.createStatement();
-            StringBuilder sb = new StringBuilder();
-            sb = sb.append("insert into customer values('");
-            sb = sb.append(name);
-            sb = sb.append("', '");
-            sb = sb.append(password);
-            sb = sb.append("', '");
-            sb = sb.append(email);
-            sb = sb.append("');");
-            String s = sb.toString();
-            try{
-                stmt.executeUpdate(s);
-            } catch (SQLIntegrityConstraintViolationException e){
-                System.err.println(e.getMessage());
-                System.err.println(
-                    "Tried to insert duplicate customer value with email ".concat(
-                    email).concat(", in CustomerDAO.insertCustomer()"));
-                ResultSet rs = stmt.executeQuery("select * from customer;");
-                while (rs.next()) { // Make customers from each line.
-                    if(rs.getString(2) == email && rs.getString(1) == name
-                            && rs.getString(3) == password) return 0;
-                    }
-                    return -5;
-            }
-            return 1;
-    }
     
     public static void main(String[] args) throws Exception {
         long t0 = System.nanoTime();

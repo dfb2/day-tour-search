@@ -71,7 +71,7 @@ public class BrowseToursController implements Initializable {
         try {
             tourCatalog = new TourCatalog();
         } catch (Exception ex) {
-            System.out.println("Failed to initialize Tour Catalog or ListView in BrowseToursController");
+            System.err.println("Failed to initialize Tour Catalog or ListView in BrowseToursController");
         }
         tourList = tourCatalog.getFullTourList();
         tourListView.setItems(tourList);
@@ -85,7 +85,7 @@ public class BrowseToursController implements Initializable {
         try {
             customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
         } catch (Exception ex) {
-            System.out.println("Failed to initialize customerPersonCatalog in BrowseToursController");
+            System.err.println("Failed to initialize customerPersonCatalog in BrowseToursController");
         }
     } 
     

@@ -1,11 +1,8 @@
 package sprint1;
 
 import en.hi.dtsapp.controller.TourCatalog;
-import static en.hi.dtsapp.model.DAOs.BookingDAO.deleteBookings;
-import en.hi.dtsapp.model.DAOs.DTSMethods;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.After;

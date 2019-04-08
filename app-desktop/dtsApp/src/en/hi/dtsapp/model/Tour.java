@@ -7,18 +7,17 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 /**
- * Class Objectives: A Java object that represents a line from the Tour SQL
- * Table The only none-final String which has a setter is travelers which
- * represents the number of travelers signed up for that Tour. setTravelers()
- * does not affect the values in the database but may be added later, upon which
- * time you'll be notified.
- * 
- * 
+ * Class Objectives: A Java object that represents a line from the Tour SQL Table. 
+ * The only none-final String which has a setter is travelers which
+ * represents the number of travelers signed up for that Tour. 
+ * setTravelers() and addTravelers() do not affect the values in the database 
+ *  they do however return true if update was successful,
+ *  suggesting that the user may continue to update the booking in the DB
+ *  using the class BookingDAO.java
  *
- * @author Erling Óskar Kristjánsson eok4@hi.is
- * @date Spring 2019
+ * @author Erling Oskar Kristjansson eok4@hi.is
  */
-public class Tour { // implements equals() defined by database primary key
+public class Tour { // implements equals() as defined by database primary key
     
     
     private final String STANDARD_IMG = "C:\\Users\\Erling Oskar\\Documents\\hi\\v19\\hbv\\DayTourSearch\\app-desktop\\dtsApp\\src\\en\\hi\\dtsapp\\model\\img\\WOW_logo_RGB.jpg";
@@ -28,6 +27,7 @@ public class Tour { // implements equals() defined by database primary key
     private final LocalDate date;
     private final LocalTime startTime, endTime;
 
+    // Needs more work before an operator can create a Tour from the UI
     public Tour(String name, String operator, String location, String startTime, String endTime, String date,
             String travelers, String maxTravelers, String price, String info, String keywords, String img) throws ParseException {
         if (info == null) info = "";  // Deal with potential issues immediately
@@ -53,6 +53,33 @@ public class Tour { // implements equals() defined by database primary key
         this.img = img;
         this.keywords = keywords;
         this.info = info;
+    }
+    
+    /**
+     * Sets the amount of travelers signed up for this Tour to amount travelers
+     *      as long as there is space
+     * @param travelers the travelers to set
+     * @return true if new amount of travelers is less than this.getMaxTravelers()
+     *      return value can be used as a suggestion as to whether the user
+     *      might want to call BookingDAO.insertBooking(..)
+    */
+    private boolean setTravelers(int travelers) {
+        if(travelers <= this.getMaxTravelers()){
+            this.travelers = travelers;
+            return true;
+        }
+        System.out.println("Did not add Traveler in Tour.setTravelers because bookings exceed MaxTravelers");
+        return false;
+    }
+
+    /**
+     * Increases the amount of travelers signed up for this Tour by amount travelers
+     *      as long as there is space
+     * @param travelers the travelers to set
+     * @return true if this.setTravelers(this.getTravelers()+travelers) returns true
+     */
+    public boolean addTravelers(int travelers) {
+        return this.setTravelers(this.getTravelers()+travelers);
     }
 
     @Override
@@ -158,27 +185,6 @@ public class Tour { // implements equals() defined by database primary key
         return travelers;
     }
 
-    /**
-     * @param travelers the travelers to set
-     * @return true if new amount of travelers is less than this.getMaxTravelers()
-    */
-    private boolean setTravelers(int travelers) {
-        if(travelers <= this.getMaxTravelers()){
-            this.travelers = travelers;
-            return true;
-        }
-        System.out.println("Did not add Traveler in Tour.setTravelers because bookings exceed MaxTravelers");
-        return false;
-    }
-
-    /**
-     * @param travelers the travelers to set
-     * @return true if this.setTravelers(this.getTravelers()+travelers) returns true
-     */
-    public boolean addTravelers(int travelers) {
-        return this.setTravelers(this.getTravelers()+travelers);
-    }
-    
     @Override
     public boolean equals(Object o) {
         if (o == this)

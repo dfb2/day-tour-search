@@ -1,6 +1,5 @@
 package en.hi.dtsapp.view;
 
-import en.hi.dtsapp.model.DAOs.TourDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,7 +8,6 @@ import javafx.stage.Stage;
 /**
  * Hlutverk klasans
  * @author Erling Óskar Kristjánsson eok4@hi.is
- * @date
  * Háskóli Íslands
  */
 public class DtsApp extends Application {

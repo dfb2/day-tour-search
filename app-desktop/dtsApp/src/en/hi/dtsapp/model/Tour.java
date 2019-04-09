@@ -1,6 +1,5 @@
 package en.hi.dtsapp.model;
 
-import en.hi.dtsapp.model.DAOs.DTSMethods;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,10 +13,12 @@ import java.util.Objects;
  *  they do however return true if update was successful,
  *  suggesting that the user may continue to update the booking in the DB
  *  using the class BookingDAO.java
- *
+ * 
+ * Implements equals()
+ * 
  * @author Erling Oskar Kristjansson eok4@hi.is
  */
-public class Tour { // implements equals() as defined by database primary key
+public class Tour implements DBO {
     
     
     private final String STANDARD_IMG = "C:\\Users\\Erling Oskar\\Documents\\hi\\v19\\hbv\\DayTourSearch\\app-desktop\\dtsApp\\src\\en\\hi\\dtsapp\\model\\img\\WOW_logo_RGB.jpg";
@@ -28,6 +29,7 @@ public class Tour { // implements equals() as defined by database primary key
     private final LocalTime startTime, endTime;
 
     // Needs more work before an operator can create a Tour from the UI
+    // E.g. validation methods as exemplified by DBO.java
     public Tour(String name, String operator, String location, String startTime, String endTime, String date,
             String travelers, String maxTravelers, String price, String info, String keywords, String img) throws ParseException {
         if (info == null) info = "";  // Deal with potential issues immediately
@@ -41,12 +43,12 @@ public class Tour { // implements equals() as defined by database primary key
                 || endTime.length() != 4 
                 || Integer.parseInt(endTime) > 2359) endTime = "2359"; 
         
-        this.date = LocalDate.parse(date, DTSMethods.DATE_FORMATTER);
+        this.date = LocalDate.parse(date, DATE_FORMATTER);
         this.name = name;
         this.operator = operator;
         this.location = location;
-        this.startTime = LocalTime.parse(startTime.trim(), DTSMethods.TIME_FORMATTER); 
-        this.endTime = LocalTime.parse(endTime, DTSMethods.TIME_FORMATTER);
+        this.startTime = LocalTime.parse(startTime.trim(), TIME_FORMATTER); 
+        this.endTime = LocalTime.parse(endTime, TIME_FORMATTER);
         this.travelers = Integer.parseInt(travelers);
         this.maxTravelers = Integer.parseInt(maxTravelers);
         this.price = Integer.parseInt(price);

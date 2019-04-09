@@ -35,8 +35,8 @@ public class BrowseToursController implements Initializable {
     private List<CustomerPerson> customerPersonCatalog;
     private final CustomerPerson customerPerson = new CustomerPerson(
             "DummyCustomer",
-            "dummyCustomer@hi.is",
-             "dummyPassword");
+             "dummyPassword",
+            "dummycustomer@hi.is");
     @FXML
     private ListView<Tour> tourListView;
     private TourCatalog tourCatalog;

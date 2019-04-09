@@ -117,8 +117,7 @@ public class TourCatalog {
      *              i.e. Unknown Error 404.
      * @param cp customerPerson who is making the booking.
      * @param tour tour that cp wants to book
-     * @param passengers number of passengers/travelers included in booking
-     * @return 
+     * @param passengers number of passengers/travelers included in booking 
      */
     public int bookTour(CustomerPerson cp, Tour tour, int passengers){
         int result = -404;

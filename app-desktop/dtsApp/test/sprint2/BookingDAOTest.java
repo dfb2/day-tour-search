@@ -5,14 +5,13 @@
  */
 package sprint2;
 
+import en.hi.dtsapp.model.Booking;
 import en.hi.dtsapp.model.DAOs.BookingDAO;
 import static en.hi.dtsapp.model.DAOs.BookingDAO.deleteBookings;
 import static en.hi.dtsapp.model.DAOs.BookingDAO.insertBooking;
 import java.sql.SQLException;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -37,6 +36,11 @@ public class BookingDAOTest {
     
     private BookingDAO bookingDAO;
     
+    private Booking validBooking;
+    private Booking invalidBooking;
+    
+    private CustomerPerson cp;
+    
     @Before
     public void setUp() throws SQLException {    
         
@@ -47,7 +51,9 @@ public class BookingDAOTest {
         validTourLocation = "Isafjordur";
         validTourStartTime = "0900";
         validTourDate = "02062019";
-        validTravelers = "20";     
+        validTravelers = "20";
+        
+        
         
         invalidCustomerEmail  = "dummyCustomerhi;is";
         invalidTourName = ";"; 
@@ -58,9 +64,9 @@ public class BookingDAOTest {
         invalidTravelers = "20;";
         
         bookingDAO = new BookingDAO();
-        
         deleteBookings(validCustomerEmail);
         deleteBookings(invalidCustomerEmail);
+        
         
     }
     

@@ -140,7 +140,7 @@ public class TourCatalog {
             this.DISTINCT_NAME_TOUR_LIST.get( this.DISTINCT_NAME_TOUR_LIST.indexOf(tour) ).addTravelers(passengers);
         }
         if(result!=1) iTour.addTravelers(-passengers);
-        System.out.println(result);
+//        System.out.println(result);
         return result;
     }
     

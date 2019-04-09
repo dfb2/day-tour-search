@@ -11,6 +11,13 @@ public abstract class Person implements DBO {
     private final String name, password, email;
     private final String SECRET_WORD = "erling";
     
+    /**
+     *
+     * @param name
+     * @param password
+     * @param email
+     * @throws IllegalArgumentException if some input is in the wrong format. Catch it and print the error message.
+     */
     public Person(String name, String password, String email) throws IllegalArgumentException{
         if(validatePersonName(name)) { 
             this.name = name;

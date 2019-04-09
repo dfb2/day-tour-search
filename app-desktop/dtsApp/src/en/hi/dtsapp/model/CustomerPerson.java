@@ -1,5 +1,7 @@
 package en.hi.dtsapp.model;
 
+import en.hi.dtsapp.model.DAOs.CustomerDAO;
+import java.sql.SQLException;
 import java.util.Objects;
 
 /**
@@ -20,9 +22,23 @@ public class CustomerPerson extends Person {
      * @param name
      * @param email 
      * @param password
+     * @throws java.sql.SQLException 
+     * @throws IllegalArgumentException Another customer in the database is registered with this email.
      */
-    public CustomerPerson(String name, String password, String email) {
+    public CustomerPerson(String name, String password, String email) throws SQLException, IllegalArgumentException {
         super(name, password, email);
+        int result = this.insertToDB();
+        switch(result){
+            case -1:
+                throw new SQLException("Failed to get class/driver to database. Try logging in again.");
+            case -2:
+                throw new SQLException("Failed to connect to database. Try logging in again.");
+            case -5:
+                throw new IllegalArgumentException("Email already in use. Try another email.");
+            case -404:
+                throw new SQLException("Unforeseen SQLException thrown in CustomerPerson constructor. Try again.");
+            default:
+        }
     }
     
     @Override
@@ -48,9 +64,13 @@ public class CustomerPerson extends Person {
         return s;
     }
 
+    private int insertToDB() {
+        return CustomerDAO.insertCustomer(this);
+    }
+
     
     public static void main(String[] args) {
-        CustomerPerson cp = new CustomerPerson("John", "johnspw", "webmaster@müller.de");
-        System.out.println(cp);
+    //    CustomerPerson cp = new CustomerPerson("John", "johnspw", "webmaster@müller.de");
+   //     System.out.println(cp);
     }
 }

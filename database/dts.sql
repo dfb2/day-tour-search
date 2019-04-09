@@ -56,7 +56,7 @@ CREATE TABLE BOOKING
     , TourLocation varchar(20) references Tour(TourLocation)
     , TourStartTime char(4) references Tour(TourStartTime)
     , TourDate char(8) references Tour(TourDate)
-    , Travellers int not null
+    , Travellers int default 1 not null
     , constraint BookingID primary key(CustomerEmail, TourName, 
       TourOperator, TourLocation, TourStartTime, TourDate)
     );

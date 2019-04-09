@@ -32,11 +32,13 @@ public class BrowseToursController implements Initializable {
     
     String[] kwEx = {"Search", "Type keywords here or pick dates", "Search..."};
     private List<String> KeywordExceptions;
-    private List<CustomerPerson> customerPersonCatalog;
-    private final CustomerPerson customerPerson = new CustomerPerson(
-            "DummyCustomer",
-             "dummyPassword",
-            "dummycustomer@hi.is");
+    
+ //   private List<CustomerPerson> customerPersonCatalog;
+    private CustomerPerson customerPerson;
+    private final String cpName = "DummyCustomer";
+    private final String cpPassword = "dummyPassword";
+    private final String cpEmail = "dummyCustomer@hi.is";
+    
     @FXML
     private ListView<Tour> tourListView;
     private TourCatalog tourCatalog;
@@ -80,13 +82,16 @@ public class BrowseToursController implements Initializable {
             passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8
         };
         setCurrentPassengers(1);
-        KeywordExceptions = new ArrayList<String>(Arrays.asList(kwEx));
+        KeywordExceptions = new ArrayList<>(Arrays.asList(kwEx));
         
         try {
-            customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
+             customerPerson = new CustomerPerson(cpName, cpPassword, cpEmail);
+            // customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
         } catch (Exception ex) {
-            System.err.println("Failed to initialize customerPersonCatalog in BrowseToursController");
+            System.err.println(ex.getMessage());
+          //  System.err.println("Failed to initialize customerPersonCatalog in BrowseToursController");
         }
+        
     } 
     
     // Reacts to Browse Distinct button being pressed by User

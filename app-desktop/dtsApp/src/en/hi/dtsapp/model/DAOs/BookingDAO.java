@@ -25,12 +25,12 @@ import java.sql.Statement;
 public class BookingDAO implements DAO { 
     
     /**
-     * Adds a new Booking to Booking Table
-     * @param booking
+     * @param booking to be added to the Booking table in the Day Tour Database
      * @return  1 if value was inserted
      *          0 if customer already booked this exact tour
      *         -1 if failed to connect to database
-     *         -9 if the tour does not have enough free space
+     *         -9 if the tour is fully booked
+     *         -404 other unexplainable SQLException. Error message printed.
      * @throws SQLException  
      */
     public static int insertBooking(Booking booking)  throws SQLException{
@@ -43,6 +43,7 @@ public class BookingDAO implements DAO {
         String tourDate = booking.getDateAsString();
         int travelers = booking.getTravelers();
 
+        System.out.println("BookingDAO: " + customerEmail);
         try {
             Class.forName(DRIVER);
         }
@@ -69,17 +70,22 @@ public class BookingDAO implements DAO {
         pstmt.setString(5, tourStartTime);
         pstmt.setString(6, tourDate);
         
-        ResultSet rs = pstmt.executeQuery(); // Will work unless table has been dropped or something...
-        while(rs.next()){
-            if(rs.getString(1).equals(customerEmail)
-               && rs.getString(2).equals(tourName)
-               && rs.getString(3).equals(tourOperator)
-               && rs.getString(4).equals(tourLocation)
-               && rs.getString(5).equals(tourStartTime)
-               && rs.getString(6).equals(tourDate)) return 0;
+        try{ // Will work unless table has been dropped or something...
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                if(rs.getString(1).equals(customerEmail)
+                   && rs.getString(2).equals(tourName)
+                   && rs.getString(3).equals(tourOperator)
+                   && rs.getString(4).equals(tourLocation)
+                   && rs.getString(5).equals(tourStartTime)
+                   && rs.getString(6).equals(tourDate)) return 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to select from booking table in BookingDAO.insertBooking(..)");
+            System.err.println(e.getMessage());
+            return -404;
         }
        
-        
         if( !updateTourTravelers(conn, travelers, tourName, tourOperator, tourLocation, 
             tourStartTime, tourDate, customerEmail)) return -9; // Tour is fully booked, we stop here.
 
@@ -93,11 +99,19 @@ public class BookingDAO implements DAO {
         pstmt.setString(5, tourStartTime);
         pstmt.setString(6, tourDate);
         pstmt.setInt(7, travelers);
-        pstmt.executeUpdate();
+        try{
+            pstmt.executeUpdate();        
+        } catch (SQLException e) {
+            System.err.println("Failed to insert value into booking table in BookingDAO.insertBooking(..)");
+            System.err.println(e.getMessage());
+            return -404;
+        }
+        
         
         return 1;
     }
 
+    
     private static boolean updateTourTravelers(Connection conn, int travelers,
         String tourName, String tourOperator, String tourLocation, String tourStartTime,
         String tourDate, String customerEmail) throws SQLException{
@@ -129,6 +143,7 @@ public class BookingDAO implements DAO {
 
     
     // Delete all bookings from Booking table that match customerEmail   
+    // Obviously not for distribution purposes...
     public static boolean deleteBookings(String customerEmail) throws SQLException{
         if(DTSMethods.isBadInput(customerEmail)) { System.err.println("bad email in BookingDAO.insertBooking()"); return false; }
         customerEmail = customerEmail.trim();

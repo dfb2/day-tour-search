@@ -30,50 +30,58 @@ public class CustomerDAO implements DAO {
      * @param cp
      * @return  1 if value was inserted, 
      *          0 if value already in Customer table, 
+     *         -1 if failed to get database class/driver, 
      *         -1 if failed to connect to database, 
      *         -5 if email already in Customer table, 
      *         -404 if unforeseen SQLException, error printed
-     * @throws SQLException 
      */
-    public static int insertCustomer(CustomerPerson cp)  throws SQLException{
+    public static int insertCustomer(CustomerPerson cp)  {
         try {
             Class.forName(DRIVER);
          }
         catch (ClassNotFoundException ex) {
             System.err.println(ex.getMessage());
-            System.err.println("Failed to connect to driver in CustomerDAO.insertCustomer()");
+            System.err.println("Failed to get class/driver in CustomerDAO.insertCustomer()");
             return -1;
          }
         String name = cp.getName();
         String email = cp.getEmail();
         String password = cp.getPassword("erling");
         
-         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-         System.out.println("Connected to database using CustomerDAO.insertCustomer()");
+        try{
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected to database using CustomerDAO.insertCustomer()");
+
+            // Check if customer already in table, or perhaps only email
+            String s = "select * from customer where CustomerEmail = ?;";
+            PreparedStatement pstmt = conn.prepareStatement(s);
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                if(rs.getString(2).equals(email)){ // customer in table?
+                    if(rs.getString(1).equals(name) && rs.getString(3).equals(password)) return 0;
+                }
+                return -5; // only email
+            }
+            // Make statement and insert customer
+            s = "insert into customer values(?, ?, ?);";
+            pstmt = conn.prepareStatement(s);
+            pstmt.setString(1, name);
+            pstmt.setString(2, email);
+            pstmt.setString(3, password);
+            try {
+               pstmt.executeUpdate();
+            } catch(SQLException e){
+                System.err.println("Failed to insert customer to Database Table in CustomerDAO.insertCustomer()");
+                System.err.println(e.getMessage());
+                return -404;
+            }
+        } catch (SQLException ex){
+            System.err.println("Failed to connect to database in CustomerDAO.insertCustomer()");
+            System.err.println(ex.getMessage());
+            return -2;
+        }
          
-         // Check if customer already in table, or perhaps only email
-         String s = "select * from customer where CustomerEmail = ?;";
-         PreparedStatement pstmt = conn.prepareStatement(s);
-         pstmt.setString(1, email);
-         ResultSet rs = pstmt.executeQuery();
-         while(rs.next()){
-             if(rs.getString(2).equals(email)){ // customer in table?
-                 if(rs.getString(1).equals(name) && rs.getString(3).equals(password)) return 0;
-             }
-             return -5; // only email
-         }
-         // Make statement and insert customer
-         s = "insert into customer values(?, ?, ?);";
-         pstmt = conn.prepareStatement(s);
-         pstmt.setString(1, name);
-         pstmt.setString(2, email);
-         pstmt.setString(3, password);
-         try {
-            pstmt.executeUpdate();
-         } catch(SQLException e){
-             System.err.println(e.getMessage());
-             return -404;
-         }
          return 1; 
     }
 

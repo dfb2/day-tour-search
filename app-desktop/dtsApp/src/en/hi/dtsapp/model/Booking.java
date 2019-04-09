@@ -11,6 +11,71 @@ import java.time.LocalTime;
  * @author Erling Oskar Kristjansson eok4@hi.is
  */
 public class Booking implements DBO {
+
+    /**
+     * @return the cpEmail
+     */
+    public String getCpEmail() {
+        return cpEmail;
+    }
+
+    /**
+     * @return the tourName
+     */
+    public String getTourName() {
+        return tourName;
+    }
+
+    /**
+     * @return the tourOperator
+     */
+    public String getTourOperator() {
+        return tourOperator;
+    }
+
+    /**
+     * @return the tourLocation
+     */
+    public String getTourLocation() {
+        return tourLocation;
+    }
+
+    /**
+     * @return the tourStartTime
+     */
+    public LocalTime getTourStartTime() {
+        return tourStartTime;
+    }
+
+    /**
+     * @return the tourDate
+     */
+    public LocalDate getTourDate() {
+        return tourDate;
+    }
+
+    /**
+     * @return the travelers
+     */
+    public int getTravelers() {
+        return travelers;
+    }
+    
+        /**
+     * @return String representation of the the startTime
+     */
+    public String getStartTimeAsString() {
+        return tourStartTime.format(TIME_FORMATTER);
+    }
+
+    /**
+     * @return String representation of the date 
+     */
+    public String getDateAsString() {
+        return tourDate.format(DATE_FORMATTER);
+    }
+    
+    
     private final String cpEmail, tourName, tourOperator, tourLocation;
     private final LocalTime tourStartTime;
     private final LocalDate tourDate;
@@ -46,3 +111,22 @@ public class Booking implements DBO {
         return ( tour.getTravelers()+travelers <= tour.getMaxTravelers());
     }
 }
+
+
+
+
+
+/*
+CREATE TABLE BOOKING
+    ( CustomerEmail varchar(20) references CUSTOMER(CustomerUserID)
+    , TourName varchar(30) references Tour(TourName)
+    , TourOperator varchar(30) references Tour(TourOperator)
+    , TourLocation varchar(20) references Tour(TourLocation)
+    , TourStartTime char(4) references Tour(TourStartTime)
+    , TourDate char(8) references Tour(TourDate)
+    , Travellers int not null
+    , constraint BookingID primary key(CustomerEmail, TourName, 
+      TourOperator, TourLocation, TourStartTime, TourDate)
+    );
+
+*/

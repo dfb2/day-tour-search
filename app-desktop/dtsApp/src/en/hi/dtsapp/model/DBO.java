@@ -32,7 +32,6 @@ public interface DBO {
         return (validateDatabaseInput(emailStr) && emailStr.length() <= 40 && matcher.matches());
     }
 
-
     // Global formatters
     public final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
     public final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmm");

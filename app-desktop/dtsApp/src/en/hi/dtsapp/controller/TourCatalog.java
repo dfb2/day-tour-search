@@ -1,8 +1,8 @@
 package en.hi.dtsapp.controller;
 
+import en.hi.dtsapp.model.Booking;
 import en.hi.dtsapp.model.CustomerPerson;
 import en.hi.dtsapp.model.DAOs.BookingDAO;
-import en.hi.dtsapp.model.DAOs.DTSMethods;
 import en.hi.dtsapp.model.Tour;
 import en.hi.dtsapp.model.DAOs.TourDAO;
 import java.sql.SQLException;
@@ -62,17 +62,17 @@ public class TourCatalog {
     /**
      * Primary method for receiving an observable list filtered by some (User) Input
      * 
-     * @param keyword String
+     * @param keyword String 
      * @param dateFrom LocalDate 
-     * @param dateTo LocalDate
-     * @param keywordExceptions List of Strings 
+     * @param dateTo LocalDate 
+     * @param keywordExceptions List of Strings that will be excluded from the search
      * @return ObservableList with all the tours in TOUR_LIST that are 
      *      within the specified dates [dateFrom, dateTo], both included,
      *      and have anything to do with any of the words in the String keyword,
      *              e.g. it's part of TourName, TourOperator, 
      *              TourLocation, TourInfo or TourKeywords.
      *        If the String keyword is in keywordExceptions,
-     *          it will not filter the list
+     *          the method will not filter the list
      *          (e.g. put UI SearchField promptText into this List)
      *      Returns an empty list if DateTo is before DateFrom,
      *      Returns an empty list if keyword is just some nonsense
@@ -102,62 +102,45 @@ public class TourCatalog {
      *      E.g. display "Booking Confirmed" if 1 is returned,
      *                   "You have already booked this tour" if 0 is returned,
      *                   "Failed to connect to database" if -1 is returned,
-     *                    
-     *          1 if value was inserted
-     *          0 if customer already booked this exact tour
-     *         -1 if failed to connect to database
-     *         -2,...,-8 if bad input contains dubious characters
-     *              (see BookingDAO.insertBooking(..) for details,
-     *              basically potential errors caused by flaws in
-     *              Tour.java or CustemerPerson.java)
-     *         -9 if the tour does not have enough free space
-     *        -10 if the tour is not in TOUR_LIST
-     *       -404 if it tour is in TourCatalog but BookingDAO.insertBooking(..)
+     *          There are the possible return values:
+     *          1 if value was inserted, 
+     *          0 if customer already booked this exact tour, 
+     *         -1 if failed to connect to database, 
+     *         -9 if the tour does not have enough free space, 
+     *        -10 if the tour is not in TOUR_LIST, 
+     *       -404 if tour is in TourCatalog but BookingDAO.insertBooking(..)
      *              never returned a value or was never called. 
      *              i.e. Unknown Error 404.
-     * @param cp customerPerson who is making the booking.
-     * @param tour tour that cp wants to book
-     * @param passengers number of passengers/travelers included in booking 
+     * @param cp CustomerPerson who is making the booking.
+     * @param tour tour that the CustomerPerson wants to book. 
+     * @param passengers number of passengers/travelers included in booking. 
      */
     public int bookTour(CustomerPerson cp, Tour tour, int passengers){
-        int result = -404;
+        Booking booking;
+        try{
+            booking = new Booking(cp, tour, passengers);
+        } catch (IllegalArgumentException e){
+            return -9;
+        }
+        
         int i = this.TOUR_LIST.indexOf(tour);
-        Tour iTour;
-        boolean b = false;
-        if(i!=-1){
-            iTour = this.TOUR_LIST.get(i);
-            b =  this.TOUR_LIST.get(i).addTravelers(passengers);
-            if(b) {
-            //    System.out.println(iTour.getTravelers());
-                try{
-                    result = BookingDAO.insertBooking(
-                        cp.getEmail(),
-                        tour.getName(),
-                        tour.getOperator(),
-                        tour.getLocation(),
-                        DTSMethods.TIME_FORMATTER.format(tour.getStartTime()),
-                        DTSMethods.DATE_FORMATTER.format(tour.getDate()),
-                        String.valueOf(passengers));
-                } catch(SQLException e) {
-                    System.err.println(e.getMessage());
-                    System.err.println("Probably didn't update booking because "
-                            + "SQLException caught in TourCatalog.bookTour()");
-                }
-            }
+        if(i==-1) return -10;
+        Tour iTour = this.TOUR_LIST.get(i);
+        iTour.addTravelers(passengers);
+        int result = -404;
+        try{
+            result = BookingDAO.insertBooking(booking);
+        } catch(SQLException e) {
+            System.err.println(e.getMessage());
+            System.err.println("Probably didn't update booking because "
+                + "SQLException caught in TourCatalog.bookTour(). "
+                    + " Honestly most likely an error with the database.");
         }
-        else {
-            System.err.println("Tour not in TourCatalog.TOUR_LIST. Didn't update booking.");
-            return -10;
+        if(result == 1 && this.DISTINCT_NAME_TOUR_LIST.contains(tour)){
+            this.DISTINCT_NAME_TOUR_LIST.get( this.DISTINCT_NAME_TOUR_LIST.indexOf(tour) ).addTravelers(passengers);
         }
-        if(b && result == 1){
-            int j = this.DISTINCT_NAME_TOUR_LIST.indexOf(tour);
-            if(j!=-1){
-                this.DISTINCT_NAME_TOUR_LIST.get(j).addTravelers(passengers);
-            }
-        //    else System.out.println("Tour not in TourCatalog.DISTINCT_NAME_TOUR_LIST. Didn't update booking there.");
-        }
-        // Decrement the value of the TOUR_LIST again because we never should've incremented it in the first place
-        if(b && result != 1 && i != -1 && iTour != null) b = iTour.addTravelers(-passengers);
+        if(result!=1) iTour.addTravelers(-passengers);
+        System.out.println(result);
         return result;
     }
     

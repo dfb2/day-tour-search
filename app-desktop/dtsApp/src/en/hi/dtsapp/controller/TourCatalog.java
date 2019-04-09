@@ -132,15 +132,15 @@ public class TourCatalog {
             result = BookingDAO.insertBooking(booking);
         } catch(SQLException e) {
             System.err.println(e.getMessage());
-            System.err.println("Probably didn't update booking because "
-                + "SQLException caught in TourCatalog.bookTour(). "
+            System.err.println("Caught SQLException in TourCatalog.bookTour() when trying to use"
+                    + " BookingDAO.insertBooking(booking). "
                     + " Honestly most likely an error with the database.");
         }
         if(result == 1 && this.DISTINCT_NAME_TOUR_LIST.contains(tour)){
             this.DISTINCT_NAME_TOUR_LIST.get( this.DISTINCT_NAME_TOUR_LIST.indexOf(tour) ).addTravelers(passengers);
         }
         if(result!=1) iTour.addTravelers(-passengers);
-        System.out.println(result);
+ //       System.out.println(result);
         return result;
     }
     

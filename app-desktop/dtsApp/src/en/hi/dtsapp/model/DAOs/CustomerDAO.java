@@ -36,6 +36,7 @@ public class CustomerDAO implements DAO {
      * @throws SQLException 
      */
     public static int insertCustomer(CustomerPerson cp)  throws SQLException{
+        System.out.println("Called insertCustomer()");
         try {
             Class.forName(DRIVER);
          }

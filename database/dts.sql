@@ -6,9 +6,9 @@
 -- Núverandi fjölda gesta skráða í ferðina, hámarksfjölda leyfðra gesta (TourMaxTravellers), 
 -- verð (TourPrice), lýsingu (TourInfo) og leitarorð sem tengjast dagsferðinni (TourKeywords). 
 CREATE TABLE TOUR
-    ( TourName varchar(30) not null
-    , TourOperator varchar(30) references OPERATOR(OperatorName)
-    , TourLocation varchar(20) not null     -- 
+    ( TourName varchar(50) not null
+    , TourOperator varchar(50) references OPERATOR(OperatorName)
+    , TourLocation varchar(50) not null     -- 
     , TourStartTime char(4) not null        -- hhmm
     , TourEndTime char(4) not null          -- hhmm
     , TourDate char(8) not null             -- ddmmyyyy
@@ -27,12 +27,12 @@ CREATE TABLE TOUR
 -- Nafn (OperatorName) og staðsetningu (OperatorLocation) fyrirtækisins og lýsingu á því (OperatorInfo).
 -- Nafn forstjóra fyrirtækisins (OperatorCEO) og netfangið hans (OperatorEmail)
 CREATE TABLE OPERATOR
-    ( OperatorName varchar(30) primary key
-    , OperatorLocation varchar(20) not null
+    ( OperatorName varchar(50) primary key
+    , OperatorLocation varchar(50) not null
     , OperatorInfo varchar(255) not null
     , OperatorCEO varchar(50) not null
-    , OperatorEmail varchar(40) not null
-    , OperatorPassword varchar(40) not null
+    , OperatorEmail varchar(50) not null
+    , OperatorPassword varchar(50) not null
     , constraint chk_email check (OperatorEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 
@@ -41,8 +41,8 @@ CREATE TABLE OPERATOR
 -- Netfang (CustomerEmail) og lykilorð (CustomerPassword)
 CREATE TABLE CUSTOMER
     ( CustomerName varchar(50) not null
-    , CustomerEmail varchar(40) primary key
-    , CustomerPassword varchar(40) not null
+    , CustomerEmail varchar(50) primary key
+    , CustomerPassword varchar(50) not null
     , constraint chk_email check (CustomerEmail like '%_@__%.__%')     -- inniheldur lagmark 1 staf fyrir @, 2 fyrir ., 2 eftir .
     );
 
@@ -50,10 +50,10 @@ CREATE TABLE CUSTOMER
 -- Netfang þess sem bókar (CustomerUserID)
 -- Fjölda farþega (Travellers)
 CREATE TABLE BOOKING
-    ( CustomerEmail varchar(20) references CUSTOMER(CustomerUserID)
-    , TourName varchar(30) references Tour(TourName)
-    , TourOperator varchar(30) references Tour(TourOperator)
-    , TourLocation varchar(20) references Tour(TourLocation)
+    ( CustomerEmail varchar(50) references CUSTOMER(CustomerUserID)
+    , TourName varchar(50) references Tour(TourName)
+    , TourOperator varchar(50) references Tour(TourOperator)
+    , TourLocation varchar(50) references Tour(TourLocation)
     , TourStartTime char(4) references Tour(TourStartTime)
     , TourDate char(8) references Tour(TourDate)
     , Travellers int not null
@@ -62,11 +62,11 @@ CREATE TABLE BOOKING
     );
 
 CREATE TABLE REVIEW 
-    ( TourName varchar(30) references TOUR(TourName)
-    , TourOperator varchar(20) references TOUR(TourOperator)
-    , TourLocation varchar(20) references TOUR(TourLocation)
-    , CustomerName varchar(40) references CUSTOMER(CustomerName)
-    , CustomerEmail varchar(40) references CUSTOMER(CustomerEmail)
+    ( TourName varchar(50) references TOUR(TourName)
+    , TourOperator varchar(50) references TOUR(TourOperator)
+    , TourLocation varchar(50) references TOUR(TourLocation)
+    , CustomerName varchar(50) references CUSTOMER(CustomerName)
+    , CustomerEmail varchar(50) references CUSTOMER(CustomerEmail)
     , ReviewDate char(8) not null
     , CustomerReview varchar(255)
     );

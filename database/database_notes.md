@@ -9,10 +9,19 @@ Er að vinna í að gera Einindavenslalíkan og -rit. Glósur eru hér neðst.
 [MySQL Downloads](https://dev.mysql.com/downloads/file/?id=483327) Erling hlóð niður MySQL Installer og í honum gat ég installað JDBC Connector fyrir Java (líklega óþarfi, held það sé innbyggt í Java, þið checkið bara annars ekkert mál að ná í það), MySQL Workbench (sem ég hata en þar er hægt að skoða gagnagrunninn, framkvæma skipanir o.fl.) og MySQL Shell (CLI sem ég elska).
 
 * Opna MySQL Shell (t.d. bara með því að tvísmella á það)
-* Tengjast með: `\connect hbv401v19cl3@den1.mysql1.gear.host:3306/`
+* Tengjast með: 
+
+```
+\connect hbv401v19cl3@den1.mysql1.gear.host:3306/
+```
+
 * Verður beðinn um lykilorð: `Xi6VcurQ~x-6` 
 * Byrja að gera SQL skipanir: `\sql`
-* Velja gagnagrunn: `use hbv401v19cl3`
+* Velja gagnagrunn: 
+
+```
+use hbv401v19cl3
+```
 * `show tables;` svipar til `.schema` í Sqlite. 
 * Þá er hægt að gera `Create Table, Insert, Update Table` o.fl. skipanir og vistast þær jafnóðum í gagnagrunninn.
 * Það á að vera hægt að gera _import dump_ með skipun í áttina við `source dts.sql`, m.v. að dts.sql sé þá í _current working directory_ (eða hafa _full path_ á undan). Þó fékk ég það ekki til að virka, en það er hægt að kópera skrána þangað inn. Gæti verið að kommentin valdi veseni.

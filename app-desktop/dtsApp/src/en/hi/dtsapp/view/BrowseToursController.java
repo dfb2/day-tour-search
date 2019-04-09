@@ -80,7 +80,7 @@ public class BrowseToursController implements Initializable {
             passengerMenuItem5, passengerMenuItem6, passengerMenuItem7, passengerMenuItem8
         };
         setCurrentPassengers(1);
-        KeywordExceptions = new ArrayList<String>(Arrays.asList(kwEx));
+        KeywordExceptions = new ArrayList<>(Arrays.asList(kwEx));
         
         try {
             customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();

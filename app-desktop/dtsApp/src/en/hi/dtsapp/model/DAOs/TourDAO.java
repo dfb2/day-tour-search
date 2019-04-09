@@ -99,7 +99,7 @@ public class TourDAO implements DAO {
             System.err.println(e.getMessage());
         }
         List<Tour> immutableList = Collections.unmodifiableList(tourList);
-        System.out.println("length of distinct list is " + immutableList.size());
+    //    System.out.println("length of distinct list is " + immutableList.size());
         return immutableList; 
     }
     

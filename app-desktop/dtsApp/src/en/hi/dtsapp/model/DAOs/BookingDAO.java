@@ -4,6 +4,7 @@ import en.hi.dtsapp.model.Booking;
 import static en.hi.dtsapp.model.DAOs.DAO.DB_URL;
 import static en.hi.dtsapp.model.DAOs.DAO.PASS;
 import static en.hi.dtsapp.model.DAOs.DAO.USER;
+import en.hi.dtsapp.model.DBO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -130,7 +131,7 @@ public class BookingDAO implements DAO {
     
     // Delete all bookings from Booking table that match customerEmail   
     public static boolean deleteBookings(String customerEmail) throws SQLException{
-        if(DTSMethods.isBadInput(customerEmail)) { System.err.println("bad email in BookingDAO.insertBooking()"); return false; }
+        if(! DBO.validateEmail(customerEmail)) { System.err.println("bad email in BookingDAO.insertBooking()"); return false; }
         customerEmail = customerEmail.trim();
         try {
             Class.forName(DRIVER);

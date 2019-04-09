@@ -1,27 +1,51 @@
 package en.hi.dtsapp.model;
 
-import en.hi.dtsapp.model.DAOs.DTSMethods;
+import static en.hi.dtsapp.model.DBO.validateDatabaseInput;
+import static en.hi.dtsapp.model.DBO.validateEmail;
 
 /**
- *
+ * 
  * @author Erling Oskar Kristjansson, eok4@hi.is
  */
-public abstract class Person {
+public abstract class Person implements DBO {
     private final String name, password, email;
+    private final String SECRET_WORD = "erling";
     
-    public Person(String name, String email, String password){
-        if(DTSMethods.isBadInput(name)) { 
-            System.err.println("Creating a person with a name that contains characters that the Database will refuse");
+    public Person(String name, String password, String email) throws IllegalArgumentException{
+        if(validatePersonName(name)) { 
+            this.name = name;
+        } else {
+            throw new IllegalArgumentException("Person name must be shorter than 50 characters and "
+                    + INVALID_DATABASE_INPUT_STRING);
         }
-        if(DTSMethods.isBadInput(password)) { 
-            System.err.println("Creating a person with a password that contains characters that the Database will refuse");
+        if(validatePersonPassword(password)) { 
+            this.password  = password;
+        } else {
+            throw new IllegalArgumentException("Person password must be shorter than 40 characters and "
+                    + INVALID_DATABASE_INPUT_STRING);
         }
-        if(DTSMethods.isBadInput(email)) { 
-            System.err.println("Creating a person with an email that contains characters that the Database will refuse");
+        if(validateEmail(email)) { 
+            this.email = email;
+        } else {
+            throw new IllegalArgumentException("Person email must be sensible email format, "
+                    + "shorter than 40 characters and "
+                    + INVALID_DATABASE_INPUT_STRING);
         }
-        this.name = name;
-        this.password  = password;
-        this.email = email;
+    }
+
+    /**
+     * @param name
+     * @return true if length of name is less than 50 and name contains no signs from the set { ; ' " null }
+     */
+    private boolean validatePersonName(String name){
+        return (validateDatabaseInput(name) && name.length() <= 50 );
+    }
+    /**
+     * @param password
+     * @return true if length of password is less than 40 and password contains no signs from the set { ; ' " null }
+     */
+    private boolean validatePersonPassword(String password){
+        return (validateDatabaseInput(password) && password.length() <= 40);
     }
     
     public String getName(){
@@ -34,5 +58,10 @@ public abstract class Person {
     
     private String getPassword(){
         return this.password;
+    }
+    
+    public String getPassword(String secretWord){
+        if (secretWord.equals(SECRET_WORD)) return this.getPassword();
+        else return "";
     }
 }

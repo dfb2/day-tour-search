@@ -18,8 +18,8 @@ public class CustomerPerson extends Person {
      *      [two or more chars]@[two or more chars].[two or more chars]
      *    And none of them can contain  or be from the set { ; ' " null }
      * @param name
-     * @param password
      * @param email 
+     * @param password
      */
     public CustomerPerson(String name, String password, String email) {
         super(name, password, email);
@@ -50,8 +50,7 @@ public class CustomerPerson extends Person {
 
     
     public static void main(String[] args) {
-        OperatorPerson op = new OperatorPerson("John", "johnspw", "john@john.com");
-        CustomerPerson cp = new CustomerPerson("John", "johnspw", "john@john.com");
-        System.out.println(cp.equals(op));
+        CustomerPerson cp = new CustomerPerson("John", "johnspw", "webmaster@müller.de");
+        System.out.println(cp);
     }
 }

@@ -144,6 +144,27 @@ public class Tour implements DBO {
     public LocalDate getDate() {
         return date;
     }
+    
+    /**
+     * @return String representation of the the startTime
+     */
+    public String getStartTimeAsString() {
+        return startTime.format(TIME_FORMATTER);
+    }
+    
+    /**
+     * @return String representation of the endTime
+     */
+    public String getEndTimeAsString() {
+        return endTime.format(TIME_FORMATTER);
+    }
+
+    /**
+     * @return String representation of the date 
+     */
+    public String getDateAsString() {
+        return date.format(DATE_FORMATTER);
+    }
 
     /**
      * @return the maxTravelers

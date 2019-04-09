@@ -1,13 +1,15 @@
 package en.hi.dtsapp.model.DAOs;
 
+import en.hi.dtsapp.model.Booking;
 import static en.hi.dtsapp.model.DAOs.DAO.DB_URL;
 import static en.hi.dtsapp.model.DAOs.DAO.PASS;
 import static en.hi.dtsapp.model.DAOs.DAO.USER;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 
 /**
@@ -24,31 +26,22 @@ public class BookingDAO implements DAO {
     
     /**
      * Adds a new Booking to Booking Table
+     * @param booking
      * @return  1 if value was inserted
      *          0 if customer already booked this exact tour
      *         -1 if failed to connect to database
-     *         -2,...,-8 if bad input contains dubious characters
      *         -9 if the tour does not have enough free space
      * @throws SQLException  
      */
-    public static int insertBooking(String customerEmail, String tourName,
-            String tourOperator, String tourLocation, String tourStartTime, 
-            String tourDate, String travelers)  throws SQLException{
-        if(DTSMethods.isBadInput(customerEmail)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -2; }
-        if(DTSMethods.isBadInput(tourName)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -3; }
-        if(DTSMethods.isBadInput(tourOperator)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -4; }
-        if(DTSMethods.isBadInput(tourLocation)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -5; }
-        if(DTSMethods.isBadInput(tourStartTime)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -6; }
-        if(DTSMethods.isBadInput(tourDate)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -7; }
-        if(DTSMethods.isBadInput(travelers)) { System.out.println("bad input in BookingDAO.insertBooking()"); return -8; }
-
-        customerEmail = customerEmail.trim(); 
-        tourName = tourName.trim();
-        tourOperator = tourOperator.trim();
-        tourLocation = tourLocation.trim();
-        tourStartTime = tourStartTime.trim();
-        tourDate = tourDate.trim();
-        travelers = travelers.trim();
+    public static int insertBooking(Booking booking)  throws SQLException{
+        
+        String customerEmail = booking.getCpEmail();
+        String tourName = booking.getTourName();
+        String tourOperator = booking.getTourOperator();
+        String tourLocation = booking.getTourLocation();
+        String tourStartTime = booking.getStartTimeAsString();
+        String tourDate = booking.getDateAsString();
+        int travelers = booking.getTravelers();
 
         try {
             Class.forName(DRIVER);
@@ -59,91 +52,71 @@ public class BookingDAO implements DAO {
             return -1;
         }
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        Statement stmt = conn.createStatement(); // could've used a prepared statement
-        StringBuilder sb;
-        String s;
-        int iTravelers = Integer.parseInt(travelers);
-        if( !updateTourTravelers(stmt, iTravelers,
-            tourName, tourOperator, tourLocation, 
-            tourStartTime, tourDate,
-            customerEmail, true)) return -9; // Tour is fully booked, we stop here.
-        // Make statement and insert booking
-        sb = new StringBuilder();
-        sb = sb.append("insert into booking values('");
-        sb = sb.append(customerEmail);
-        sb = sb.append("', '");
-        sb = sb.append(tourName);
-        sb = sb.append("', '");
-        sb = sb.append(tourOperator);
-        sb = sb.append("', '");
-        sb = sb.append(tourLocation);
-        sb = sb.append("', '");
-        sb = sb.append(tourStartTime);
-        sb = sb.append("', '");
-        sb = sb.append(tourDate);
-        sb = sb.append("', ");
-        sb = sb.append(travelers);
-        sb = sb.append(");");
-        s = sb.toString();
-        try{
-            System.out.println(s);
-            stmt.executeUpdate(s);
-        } catch (SQLIntegrityConstraintViolationException e){
-            System.err.println(e.getMessage());
-            System.err.println(
-                "Tried to insert duplicate booking value with email ".concat(
-                customerEmail).concat(", in BookingDAO.insertBooking()"));
-            // lower this value again, shouldn't cause any trouble
-            updateTourTravelers(stmt, iTravelers,
-            tourName, tourOperator, tourLocation, 
-            tourStartTime, tourDate,
-            customerEmail, false);       
-            return 0;
-        } catch (SQLSyntaxErrorException se){
-            System.err.println(se.getMessage());
-            System.err.println(
-                "Issue with syntax/value for customer with email ".concat(
-                customerEmail).concat(", in BookingDAO.insertBooking()").concat(
-                ". Probably caused by wrong date."));
-             // lower this value again, shouldn't cause any trouble
-            updateTourTravelers(stmt, iTravelers,
-            tourName, tourOperator, tourLocation, 
-            tourStartTime, tourDate,
-            customerEmail, false);
-            return 0;
+        System.out.println("Connected to database using BookingDAO.insertBooking()");
+
+         // Check if booking already in table
+        String s = "select * from booking where CustomerEmail = ?"
+                 + " and TourName = ?" 
+                 + " and TourOperator = ?"
+                 + " and TourLocation = ?"
+                 + " and TourStartTime = ?"
+                 + " and TourDate = ?;";
+        PreparedStatement pstmt = conn.prepareStatement(s);
+        pstmt.setString(1, customerEmail);
+        pstmt.setString(2, tourName);
+        pstmt.setString(3, tourOperator);
+        pstmt.setString(4, tourLocation);
+        pstmt.setString(5, tourStartTime);
+        pstmt.setString(6, tourDate);
+        
+        ResultSet rs = pstmt.executeQuery(); // Will work unless table has been dropped or something...
+        while(rs.next()){
+            if(rs.getString(1).equals(customerEmail)
+               && rs.getString(2).equals(tourName)
+               && rs.getString(3).equals(tourOperator)
+               && rs.getString(4).equals(tourLocation)
+               && rs.getString(5).equals(tourStartTime)
+               && rs.getString(6).equals(tourDate)) return 0;
         }
+       
+        
+        if( !updateTourTravelers(conn, travelers, tourName, tourOperator, tourLocation, 
+            tourStartTime, tourDate, customerEmail)) return -9; // Tour is fully booked, we stop here.
+
+        s = "insert into booking values(?,?,?,?,?,?,?);";
+        pstmt.clearParameters();
+        pstmt = conn.prepareStatement(s);
+        pstmt.setString(1, customerEmail);
+        pstmt.setString(2, tourName);
+        pstmt.setString(3, tourOperator);
+        pstmt.setString(4, tourLocation);
+        pstmt.setString(5, tourStartTime);
+        pstmt.setString(6, tourDate);
+        pstmt.setInt(7, travelers);
+        pstmt.executeUpdate();
         
         return 1;
     }
-    
-    private static final String INCREMENT_TOUR_TRAVELERS = "update tour set TourTravellers = TourTravellers +";
-    private static final String DECREMENT_TOUR_TRAVELERS = "update tour set TourTravellers = TourTravellers -";
-    
-    // Increments TourTravelers by travelers in Tour if inc is true
-    private static boolean updateTourTravelers(Statement stmt, int travelers,
-            String tourName, String tourOperator, String tourLocation, 
-            String tourStartTime, String tourDate,
-            String customerEmail, boolean inc) throws SQLException{
-        StringBuilder sb = new StringBuilder();
-        String s;
-        if(inc) s = INCREMENT_TOUR_TRAVELERS;
-        else s = DECREMENT_TOUR_TRAVELERS;
-        sb = sb.append(s + travelers + "  where ");
-        sb = sb.append("TourName = '");
-        sb = sb.append(tourName);
-        sb = sb.append("'and TourOperator= '");
-        sb = sb.append(tourOperator);
-        sb = sb.append("'and TourLocation= '");
-        sb = sb.append(tourLocation);
-        sb = sb.append("'and TourStartTime= '");
-        sb = sb.append(tourStartTime);
-        sb = sb.append("'and TourDate= '");
-        sb = sb.append(tourDate);
-        sb = sb.append("';");
-        s = sb.toString();
+
+    private static boolean updateTourTravelers(Connection conn, int travelers,
+        String tourName, String tourOperator, String tourLocation, String tourStartTime,
+        String tourDate, String customerEmail) throws SQLException{
+        String s = "update tour set TourTravellers = TourTravellers + " + travelers
+                + " where TourName = ?"
+                + " and TourOperator = ?"
+                + " and TourLocation = ?"
+                + " and TourStartTime = ?"
+                + " and tourDate = ?;";
+        PreparedStatement pstmt = conn.prepareStatement(s);
+        pstmt.setString(1, tourName);
+        pstmt.setString(2, tourOperator);
+        pstmt.setString(3, tourLocation);
+        pstmt.setString(4, tourStartTime);
+        pstmt.setString(5, tourDate);
+        
         try{
             System.out.println(s);
-            stmt.executeUpdate(s);
+            pstmt.executeUpdate();
         } catch (SQLIntegrityConstraintViolationException e){
             System.err.println(e.getMessage());
             System.err.println(
@@ -188,9 +161,6 @@ public class BookingDAO implements DAO {
     public static void main(String[] args) throws SQLException {
         deleteBookings("dummyCustomer@hi.is");
         long t0 = System.nanoTime();
-        System.out.println("insertBooking return  value: " + 
-                insertBooking("dummyCustomer@hi.is", "Arctic Fox hunt",
-                "Isafjordur Tours", "Isafjordur", "0900", "02062019","20"));
         long t1 = System.nanoTime();
         System.out.println("Inserting Dummy Booking took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
         deleteBookings("dummyCustomer@hi.is");

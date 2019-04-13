@@ -1,5 +1,8 @@
-package en.hi.dtsapp.model;
+package en.hi.dtsapp.model.tours;
 
+
+
+import en.hi.dtsapp.model.DBO;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;

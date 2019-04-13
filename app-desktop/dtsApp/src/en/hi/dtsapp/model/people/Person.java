@@ -1,5 +1,6 @@
-package en.hi.dtsapp.model;
+package en.hi.dtsapp.model.people;
 
+import en.hi.dtsapp.model.DBO;
 import static en.hi.dtsapp.model.DBO.validateDatabaseInput;
 import static en.hi.dtsapp.model.DBO.validateEmail;
 

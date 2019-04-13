@@ -11,15 +11,14 @@
             <file>file:/C:/Users/ellio/Documents/hi/v19/hbv/dts/app-desktop/dtsApp/src/en/hi/dtsapp/view/DtsApp.java</file>
         </group>
         <group name="C++">
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/view/DtsApp.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/Tour.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/Booking.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/bookings/BookingDAO.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/tours/TourDAO.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/people/CustomerPerson.java</file>
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/view/BrowseToursController.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/DBO.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/CustomerPerson.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/CustomerDAO.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/TourDAO.java</file>
-            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAOs/BookingDAO.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/bookings/Booking.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/people/Person.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/people/CustomerDAO.java</file>
+            <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/model/DAO.java</file>
             <file>file:/C:/Users/Erling%20Oskar/Documents/hi/v19/hbv/DayTourSearch/app-desktop/dtsApp/src/en/hi/dtsapp/controller/TourCatalog.java</file>
         </group>
     </open-files>

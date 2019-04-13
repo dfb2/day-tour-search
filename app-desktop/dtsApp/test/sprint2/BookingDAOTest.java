@@ -5,10 +5,10 @@
  */
 package sprint2;
 
-import en.hi.dtsapp.model.Booking;
-import en.hi.dtsapp.model.DAOs.BookingDAO;
-import static en.hi.dtsapp.model.DAOs.BookingDAO.deleteBookings;
-import static en.hi.dtsapp.model.DAOs.BookingDAO.insertBooking;
+import en.hi.dtsapp.model.bookings.Booking;
+import en.hi.dtsapp.model.bookings.BookingDAO;
+import static en.hi.dtsapp.model.bookings.BookingDAO.deleteBookings;
+import static en.hi.dtsapp.model.bookings.BookingDAO.insertBooking;
 import java.sql.SQLException;
 import org.junit.After;
 import org.junit.Before;

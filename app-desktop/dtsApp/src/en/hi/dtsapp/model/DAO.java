@@ -1,4 +1,8 @@
-package en.hi.dtsapp.model.DAOs;
+package en.hi.dtsapp.model;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *

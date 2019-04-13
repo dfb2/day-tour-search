@@ -1,16 +1,15 @@
-package en.hi.dtsapp.model.DAOs;
+package en.hi.dtsapp.model.bookings;
 
-import en.hi.dtsapp.model.Booking;
-import static en.hi.dtsapp.model.DAOs.DAO.DB_URL;
-import static en.hi.dtsapp.model.DAOs.DAO.PASS;
-import static en.hi.dtsapp.model.DAOs.DAO.USER;
+import en.hi.dtsapp.model.DAO;
+import static en.hi.dtsapp.model.DAO.DB_URL;
+import static en.hi.dtsapp.model.DAO.PASS;
+import static en.hi.dtsapp.model.DAO.USER;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.sql.Statement;
 
 /**
  * The primary method a user would be interested in is at the top:
@@ -33,7 +32,7 @@ public class BookingDAO implements DAO {
      *         -404 other unexplainable SQLException. Error message printed.
      * @throws SQLException  
      */
-    public static int insertBooking(Booking booking)  throws SQLException{
+    protected static int insertBooking(Booking booking)  throws SQLException{
         
         String customerEmail = booking.getCpEmail();
         String tourName = booking.getTourName();
@@ -142,10 +141,12 @@ public class BookingDAO implements DAO {
     }
 
     
+    /*
     // Delete all bookings from Booking table that match customerEmail   
     // Obviously not for distribution purposes...
     public static boolean deleteBookings(String customerEmail) throws SQLException{
-        if(DTSMethods.isBadInput(customerEmail)) { System.err.println("bad email in BookingDAO.insertBooking()"); return false; }
+        if(!DBO.validateEmail(customerEmail)) {
+            System.err.println("bad email in BookingDAO.insertBooking()"); return false; }
         customerEmail = customerEmail.trim();
         try {
             Class.forName(DRIVER);
@@ -170,14 +171,14 @@ public class BookingDAO implements DAO {
         }
         return true;
     }
-    
+    */
     
     // Test methods. Also deletes all bookings by "dummyCustomer@hi.is"
     public static void main(String[] args) throws SQLException {
-        deleteBookings("dummyCustomer@hi.is");
+    //    deleteBookings("dummyCustomer@hi.is");
         long t0 = System.nanoTime();
         long t1 = System.nanoTime();
         System.out.println("Inserting Dummy Booking took " + ((t1-t0)/Math.pow(10,9)) + " seconds");
-        deleteBookings("dummyCustomer@hi.is");
+    //    deleteBookings("dummyCustomer@hi.is");
     }
 }

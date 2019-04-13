@@ -1,6 +1,6 @@
-package en.hi.dtsapp.model.DAOs;
+package en.hi.dtsapp.model.tours;
 
-import en.hi.dtsapp.model.Tour;
+import en.hi.dtsapp.model.DAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

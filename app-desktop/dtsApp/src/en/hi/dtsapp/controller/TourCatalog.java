@@ -1,10 +1,8 @@
 package en.hi.dtsapp.controller;
 
-import en.hi.dtsapp.model.Booking;
-import en.hi.dtsapp.model.CustomerPerson;
-import en.hi.dtsapp.model.DAOs.BookingDAO;
-import en.hi.dtsapp.model.Tour;
-import en.hi.dtsapp.model.DAOs.TourDAO;
+import en.hi.dtsapp.model.tours.*;
+import en.hi.dtsapp.model.bookings.*;
+import en.hi.dtsapp.model.people.CustomerPerson;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -42,11 +40,18 @@ public class TourCatalog {
     
     private final List<Tour> TOUR_LIST;
     private final List<Tour> DISTINCT_NAME_TOUR_LIST;
+    private CustomerPerson CustomerPerson;
     
     public TourCatalog() throws Exception {
         this.TOUR_LIST = TourDAO.initiateTourCatalog();
         this.DISTINCT_NAME_TOUR_LIST = TourDAO.distinctTourCatalog();
     //    displaySomeTours();
+    }
+    
+    public void setCustomerPerson(String name, String password, String email) 
+            throws IllegalArgumentException, ClassNotFoundException, SQLException{
+        this.CustomerPerson = new CustomerPerson(name, password, email);
+        this.CustomerPerson.insertToDB();
     }
     
     // Returns an observable List with all the tours

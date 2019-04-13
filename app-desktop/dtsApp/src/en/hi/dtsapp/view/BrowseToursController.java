@@ -1,8 +1,8 @@
 package en.hi.dtsapp.view;
 
-import en.hi.dtsapp.model.CustomerPerson;
+import en.hi.dtsapp.model.people.CustomerPerson;
 import en.hi.dtsapp.controller.TourCatalog;
-import en.hi.dtsapp.model.Tour;
+import en.hi.dtsapp.model.tours.Tour;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -5,7 +5,7 @@
  */
 package sprint2;
 
-import en.hi.dtsapp.model.OperatorPerson;
+import en.hi.dtsapp.model.people.OperatorPerson;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

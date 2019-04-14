@@ -30,7 +30,9 @@ public class BookingDAO implements DAO {
      *         -1 if failed to connect to database
      *         -9 if the tour is fully booked
      *         -404 other unexplainable SQLException. Error message printed.
-     * @throws SQLException  
+     * @throws java.lang.ClassNotFoundException failed to get JDBC Driver
+     * @throws SQLException failed to connect to database or perform DB action
+     * @throws IllegalArgumentException if Customer already booked this tour
      */
     protected static boolean insertBooking(Booking booking)
             throws ClassNotFoundException, SQLException, IllegalArgumentException {

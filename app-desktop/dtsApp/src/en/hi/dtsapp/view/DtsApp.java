@@ -16,7 +16,7 @@ public class DtsApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("BrowseTours.fxml"));
 
-        Scene scene = new Scene(root, 1100, 500);
+        Scene scene = new Scene(root, 1200, 800);
 
         primaryStage.setTitle("Day Tour Search!");
         primaryStage.setScene(scene);

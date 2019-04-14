@@ -4,6 +4,7 @@ import en.hi.dtsapp.controller.TourCatalog;
 import en.hi.dtsapp.model.tours.Tour;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,15 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import java.util.List;
-
+import java.util.Optional;
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.layout.GridPane;
 
 /**
  * FXML Controller class
@@ -33,30 +42,25 @@ public class BrowseToursController implements Initializable {
     private List<String> KeywordExceptions;
     
  //   private List<CustomerPerson> customerPersonCatalog;
-    private final String cpName = "DummyCustomer";
-    private final String cpPassword = "dummyPassword";
-    private final String cpEmail = "dummyCustomer@hi.is";
+    private String cpName = "DummyCustomer";
+    private String cpPassword = "dummyPassword";
+    private String cpEmail = "dummyCustomer@hi.is";
     
-    @FXML
-    private ListView<Tour> tourListView;
+    @FXML private ListView<Tour> tourListView;
     private TourCatalog tourCatalog;
     private ObservableList<Tour> tourList;
-    @FXML
-    private TextField searchField;
+    @FXML private TextField searchField;
     
-    @FXML
-    private DatePicker dateFromField, dateToField;
+    @FXML private DatePicker dateFromField, dateToField;
     private LocalDate dateFrom, dateTo;
     
-    @FXML
-    private MenuItem passengerMenuItem1, passengerMenuItem2, 
+    @FXML private MenuItem passengerMenuItem1, passengerMenuItem2, 
             passengerMenuItem3, passengerMenuItem4,
             passengerMenuItem5, passengerMenuItem6, 
             passengerMenuItem7, passengerMenuItem8;
     private MenuItem[] PassengerMenuItems;
     private int selectedPassengers;
-    @FXML
-    private SplitMenuButton PassengerSplitMenu;
+    @FXML private SplitMenuButton PassengerSplitMenu;
     
     
     /**
@@ -70,7 +74,7 @@ public class BrowseToursController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             tourCatalog = new TourCatalog();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | SQLException | ParseException ex) {
             System.err.println("Failed to initialize Tour Catalog or ListView in BrowseToursController");
         }
         tourList = tourCatalog.getFullTourList();
@@ -85,7 +89,7 @@ public class BrowseToursController implements Initializable {
         try {
              tourCatalog.setCustomerPerson(cpName, cpPassword, cpEmail);
             // customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalArgumentException | SQLException ex) {
             System.err.println(ex.getMessage());
           //  System.err.println("Failed to initialize customerPersonCatalog in BrowseToursController");
         }
@@ -182,5 +186,52 @@ public class BrowseToursController implements Initializable {
         
         // And refresh the information in the listView
         tourListView.refresh();
+    }
+
+    @FXML // Creates a dialog in response to user clicking Login/SignUp button 
+    private void createCustomerPersonDialog(ActionEvent event) {
+        Dialog dialog = new Dialog();
+        dialog.setTitle("Login/SignUp");
+        dialog.setHeaderText("Please enter your details:");
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("Login", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        // Create the input labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        TextField name = new TextField();
+        name.setPromptText("Name");
+        TextField email = new TextField();
+        email.setPromptText("Email");
+        PasswordField password = new PasswordField();
+        password.setPromptText("Password");
+        
+        grid.add(new Label("Name:"), 0, 0);
+        grid.add(name, 1, 0);
+        grid.add(new Label("Email:"), 0, 1);
+        grid.add(email, 1, 1);
+        grid.add(new Label("Password:"), 0, 2);
+        grid.add(password, 1, 2);
+        
+        dialog.getDialogPane().setContent(grid);
+        Platform.runLater(() -> name.requestFocus());
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            cpName = name.getText();
+            cpPassword = password.getText();
+            cpEmail = email.getText();
+            try {
+                  tourCatalog.setCustomerPerson(cpName, cpPassword, cpEmail);
+             } catch (ClassNotFoundException | IllegalArgumentException | SQLException ex) {
+                 System.err.println(ex.getMessage());
+             }
+        }
     }
 }

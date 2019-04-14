@@ -72,8 +72,9 @@ public class TourCatalog {
      */
     public void setCustomerPerson(String name, String password, String email) 
             throws IllegalArgumentException, ClassNotFoundException, SQLException{
-        this.CustomerPerson = new CustomerPerson(name, password, email);
-        this.CustomerPerson.insertToDB();
+        CustomerPerson temp = new CustomerPerson(name, password, email);
+        temp.insertToDB(); // If this throws exception, this.Customer won't be changed 
+        this.CustomerPerson = temp; // Only set this.CustomerPerson if we haven't thrown an Exception yet
     }
     
     /**
@@ -177,7 +178,7 @@ public class TourCatalog {
         if(i==-1) throw new NullPointerException("Tour is not in catalog.");
         Tour iTour = this.TOUR_LIST.get(i);
         iTour.addTravelers(passengers);
-        if(b && this.DISTINCT_NAME_TOUR_LIST.contains(tour)){
+        if(b && this.DISTINCT_NAME_TOUR_LIST.contains(tour)){ // update Distinct Tour List as well
             this.DISTINCT_NAME_TOUR_LIST.get( this.DISTINCT_NAME_TOUR_LIST.indexOf(tour) ).addTravelers(passengers);
         }
         return b;

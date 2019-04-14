@@ -8,17 +8,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1065.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="en.hi.dtsapp.view.BrowseToursController">
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="1200.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="en.hi.dtsapp.view.BrowseToursController">
     <stylesheets>
         <URL value="@css/browsetours.css" />
     </stylesheets>
    <children>
-      <ScrollPane layoutY="52.0" prefHeight="550.0" prefWidth="1065.0">
+      <ScrollPane layoutY="52.0" prefHeight="800.0" prefWidth="1200.0">
          <content>
-            <ListView fx:id="tourListView" prefHeight="483.0" prefWidth="1060.0" />
+            <ListView fx:id="tourListView" prefHeight="644.0" prefWidth="1198.0" />
          </content>
       </ScrollPane>
-      <ToolBar prefHeight="52.0" prefWidth="1065.0">
+      <ToolBar prefHeight="52.0" prefWidth="1200.0">
         <items>
             <TextField fx:id="searchField" prefHeight="40.0" prefWidth="200.0" promptText="Search..." />
             <DatePicker fx:id="dateFromField" editable="false" prefHeight="40.0" prefWidth="150.0" promptText="From" />
@@ -39,6 +39,7 @@
           <Button mnemonicParsing="false" onAction="#browseDistinctTours" prefHeight="40.0" prefWidth="126.0" text="Browse Distinct" />
             <Button mnemonicParsing="false" onAction="#clearSearchParameters" prefHeight="40.0" prefWidth="53.0" text="Clear" />
             <Button mnemonicParsing="false" onAction="#bookSelectedTour" prefHeight="40.0" prefWidth="146.0" text="Book selected tour" />
+            <Button mnemonicParsing="false" onAction="#createCustomerPersonDialog" prefHeight="40.0" prefWidth="130.0" text="Login/Signup" />
         </items>
       </ToolBar>
    </children>

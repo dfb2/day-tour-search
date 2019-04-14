@@ -21,7 +21,8 @@ public class CustomerPerson extends Person {
      * @param name
      * @param email 
      * @param password
-     * @throws IllegalArgumentException Another customer in the database is registered with this email.
+     * @throws IllegalArgumentException if some input is in the wrong format. 
+     *                  Catch it and print the error message.
      */
     public CustomerPerson(String name, String password, String email) 
             throws IllegalArgumentException {

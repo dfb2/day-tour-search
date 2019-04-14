@@ -1,9 +1,5 @@
 package en.hi.dtsapp.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 /**
  *
  * @author Erling Óskar Kristjánsson eok4@hi.is

@@ -31,8 +31,9 @@ public class CustomerDAO implements DAO {
      * @param cp
      * @return  true if cp was inserted into
      *                  false if cp was already in the Customer Table
-     * @throws java.lang.ClassNotFoundException 
-     * @throws java.sql.SQLException 
+     * @throws java.lang.ClassNotFoundException failed to get JDBC Driver
+     * @throws java.sql.SQLException failed to connect to database or perform DB action
+     * @throws IllegalArgumentException if Customer Email is already in use
      */
     protected static boolean insertCustomer(CustomerPerson cp) 
             throws ClassNotFoundException, SQLException, IllegalArgumentException {
@@ -84,8 +85,13 @@ public class CustomerDAO implements DAO {
                     rs.getString(1),
                     rs.getString(3),
                     rs.getString(2));
-            if (temp.equals(cp)) return 1;
-            if (temp.getEmail().equals(cp.getEmail())) return -1;
+            if (temp.equals(cp)){ // same email
+                if (temp.getName().equals(cp.getName())
+                        && temp.getPassword(LEYNDO).equals(cp.getPassword(LEYNDO))){
+                    return 1;
+                } 
+                return -1;
+            }
         }
         return 0;
     }
@@ -145,6 +151,7 @@ public class CustomerDAO implements DAO {
             throw ex;
          }
         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+//        System.err.println("Connected to DB in CustomerDAO");
         return conn;
     }
     

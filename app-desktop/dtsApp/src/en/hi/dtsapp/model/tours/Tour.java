@@ -23,7 +23,6 @@ import java.util.Objects;
  */
 public class Tour implements DBO {
     
-    
     private final String STANDARD_IMG = "C:\\Users\\Erling Oskar\\Documents\\hi\\v19\\hbv\\DayTourSearch\\app-desktop\\dtsApp\\src\\en\\hi\\dtsapp\\model\\img\\WOW_logo_RGB.jpg";
     private final String name, operator, location, info, keywords, img;
     private final int maxTravelers, price;

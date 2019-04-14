@@ -130,7 +130,7 @@ public class CustomerDAO implements DAO {
         return immutableList; 
     }
     
-      /**
+     /**
      * @return conn, Connection to the DayTourSearch database
      * @throws ClassNotFoundException did not find JDBC driver class
      * @throws SQLException failed to establish a connection with database

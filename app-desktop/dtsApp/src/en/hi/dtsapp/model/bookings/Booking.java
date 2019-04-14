@@ -3,6 +3,7 @@ package en.hi.dtsapp.model.bookings;
 import en.hi.dtsapp.model.DBO;
 import en.hi.dtsapp.model.tours.Tour;
 import en.hi.dtsapp.model.people.CustomerPerson;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -25,7 +26,8 @@ public class Booking implements DBO {
      * @param travelers number of travelers/passengers/members included in the booking
      * @throws IllegalArgumentException tour doesn't have enough space for these additional travelers
      */
-    public Booking(CustomerPerson cp, Tour tour, int travelers) throws IllegalArgumentException{
+    public Booking(CustomerPerson cp, Tour tour, int travelers) 
+            throws IllegalArgumentException{
         if(validateTravelers(tour, travelers)){
             this.cpEmail = cp.getEmail();
             this.tourName = tour.getName();
@@ -36,11 +38,12 @@ public class Booking implements DBO {
             this.travelers = travelers;
         } else {
             throw new IllegalArgumentException("Could not create booking"
-                    + "because the tour has fewer than " + travelers + " passenger/traveler slots remaining" );
+                    + " because the tour has fewer than " + travelers + " passenger/traveler slots remaining" );
         }
     }
 
-    private int insertToDB() {
+    public boolean insertToDB() 
+            throws ClassNotFoundException, SQLException, IllegalArgumentException {
         return BookingDAO.insertBooking(this);
     }
     

@@ -1,9 +1,9 @@
 package en.hi.dtsapp.view;
 
-import en.hi.dtsapp.model.people.CustomerPerson;
 import en.hi.dtsapp.controller.TourCatalog;
 import en.hi.dtsapp.model.tours.Tour;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,6 @@ public class BrowseToursController implements Initializable {
     private List<String> KeywordExceptions;
     
  //   private List<CustomerPerson> customerPersonCatalog;
-    private CustomerPerson customerPerson;
     private final String cpName = "DummyCustomer";
     private final String cpPassword = "dummyPassword";
     private final String cpEmail = "dummyCustomer@hi.is";
@@ -84,13 +83,12 @@ public class BrowseToursController implements Initializable {
         KeywordExceptions = new ArrayList<>(Arrays.asList(kwEx));
         
         try {
-             customerPerson = new CustomerPerson(cpName, cpPassword, cpEmail);
+             tourCatalog.setCustomerPerson(cpName, cpPassword, cpEmail);
             // customerPersonCatalog = CustomerDAO.initiateCustomerCatalog();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
           //  System.err.println("Failed to initialize customerPersonCatalog in BrowseToursController");
         }
-        
     } 
     
     // Reacts to Browse Distinct button being pressed by User
@@ -154,12 +152,34 @@ public class BrowseToursController implements Initializable {
     }
 
 
-    @FXML // Responds to the event of a user clicking the Book Selected Tour button
+    /**
+     * 
+     * @param event User clicked the Book Selected Tour button
+     * @throws IllegalArgumentException 
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    @FXML
     private void bookSelectedTour(ActionEvent event) {
         if(tourListView.getSelectionModel().getSelectedItem() == null) return;
         // Update the actual tour in the tour catalog
         Tour tour = tourListView.getSelectionModel().getSelectedItem();
-        int result = tourCatalog.bookTour(customerPerson, tour, selectedPassengers);
+        try{
+            boolean result = tourCatalog.bookTour(tour, selectedPassengers);        
+        }
+        catch(IllegalArgumentException iae) {
+            System.err.println("Caught IllegalArgException in BrowseToursController.bookSelectedTour()");
+            System.err.println(iae.getMessage());
+        }
+        catch(ClassNotFoundException cnfe) {
+            System.err.println("Caught ClassNotFoundExc in BrowseToursController.bookSelectedTour()");
+            System.err.println(cnfe.getMessage());
+        }
+        catch(SQLException ex) {
+            System.err.println("Caught SQLExc in BrowseToursController.bookSelectedTour()");
+            System.err.println(ex.getMessage());
+        }
+        
         // And refresh the information in the listView
         tourListView.refresh();
     }

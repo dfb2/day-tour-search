@@ -32,29 +32,58 @@ public class BookingDAO implements DAO {
      *         -404 other unexplainable SQLException. Error message printed.
      * @throws SQLException  
      */
-    protected static int insertBooking(Booking booking)  throws SQLException{
-        
-        String customerEmail = booking.getCpEmail();
-        String tourName = booking.getTourName();
-        String tourOperator = booking.getTourOperator();
-        String tourLocation = booking.getTourLocation();
-        String tourStartTime = booking.getStartTimeAsString();
-        String tourDate = booking.getDateAsString();
-        int travelers = booking.getTravelers();
-
-        System.out.println("BookingDAO: " + customerEmail);
-        try {
-            Class.forName(DRIVER);
+    protected static boolean insertBooking(Booking booking)
+            throws ClassNotFoundException, SQLException, IllegalArgumentException {
+        try (Connection conn = getConnection()) {
+            if(bookingInTable(conn, booking)){
+                throw new IllegalArgumentException("Customer already booked this tour.");
+            }
+            if(updateTourTravelers(conn, booking)) {
+                insertBooking(conn, booking);
+                conn.close();
+                return true;
+            }
+            conn.close();
+            return false;
         }
-        catch (ClassNotFoundException ex) {
-            System.err.println(ex.getMessage());
-            System.err.println("Failed to connect to driver in CustomerDAO.insertCustomer()");
-            return -1;
+    }
+    
+    private static void insertBooking(
+            Connection conn, Booking booking)
+            throws ClassNotFoundException, SQLException{
+        String s = "insert into booking values(?,?,?,?,?,?,?);";
+        PreparedStatement pstmt = conn.prepareStatement(s);
+        pstmt.clearParameters();
+        pstmt = conn.prepareStatement(s);
+        pstmt.setString(1, booking.getCpEmail());
+        pstmt.setString(2, booking.getTourName());
+        pstmt.setString(3, booking.getTourOperator());
+        pstmt.setString(4, booking.getTourLocation());
+        pstmt.setString(5, booking.getStartTimeAsString());
+        pstmt.setString(6, booking.getDateAsString());
+        pstmt.setInt(7, booking.getTravelers());
+        pstmt.executeUpdate();
+    }
+    
+    private static boolean bookingInTable(
+            Connection conn, Booking booking)
+            throws SQLException {
+        ResultSet rs = selectBooking(conn, booking);
+        while(rs.next()){
+                if(rs.getString(1).equals(booking.getCpEmail())
+                   && rs.getString(2).equals(booking.getTourName())
+                   && rs.getString(3).equals(booking.getTourOperator())
+                   && rs.getString(4).equals(booking.getTourLocation())
+                   && rs.getString(5).equals(booking.getStartTimeAsString())
+                   && rs.getString(6).equals(booking.getDateAsString())) return true;
         }
-        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-        System.out.println("Connected to database using BookingDAO.insertBooking()");
+        return false;
+    }
 
-         // Check if booking already in table
+    private static ResultSet selectBooking(
+            Connection conn, Booking booking)
+            throws SQLException { 
+        // Check if booking already in table
         String s = "select * from booking where CustomerEmail = ?"
                  + " and TourName = ?" 
                  + " and TourOperator = ?"
@@ -62,70 +91,30 @@ public class BookingDAO implements DAO {
                  + " and TourStartTime = ?"
                  + " and TourDate = ?;";
         PreparedStatement pstmt = conn.prepareStatement(s);
-        pstmt.setString(1, customerEmail);
-        pstmt.setString(2, tourName);
-        pstmt.setString(3, tourOperator);
-        pstmt.setString(4, tourLocation);
-        pstmt.setString(5, tourStartTime);
-        pstmt.setString(6, tourDate);
-        
-        try{ // Will work unless table has been dropped or something...
-            ResultSet rs = pstmt.executeQuery();
-            while(rs.next()){
-                if(rs.getString(1).equals(customerEmail)
-                   && rs.getString(2).equals(tourName)
-                   && rs.getString(3).equals(tourOperator)
-                   && rs.getString(4).equals(tourLocation)
-                   && rs.getString(5).equals(tourStartTime)
-                   && rs.getString(6).equals(tourDate)) return 0;
-            }
-        } catch (SQLException e) {
-            System.err.println("Failed to select from booking table in BookingDAO.insertBooking(..)");
-            System.err.println(e.getMessage());
-            return -404;
-        }
-       
-        if( !updateTourTravelers(conn, travelers, tourName, tourOperator, tourLocation, 
-            tourStartTime, tourDate, customerEmail)) return -9; // Tour is fully booked, we stop here.
-
-        s = "insert into booking values(?,?,?,?,?,?,?);";
-        pstmt.clearParameters();
-        pstmt = conn.prepareStatement(s);
-        pstmt.setString(1, customerEmail);
-        pstmt.setString(2, tourName);
-        pstmt.setString(3, tourOperator);
-        pstmt.setString(4, tourLocation);
-        pstmt.setString(5, tourStartTime);
-        pstmt.setString(6, tourDate);
-        pstmt.setInt(7, travelers);
-        try{
-            pstmt.executeUpdate();        
-        } catch (SQLException e) {
-            System.err.println("Failed to insert value into booking table in BookingDAO.insertBooking(..)");
-            System.err.println(e.getMessage());
-            return -404;
-        }
-        
-        
-        return 1;
+        pstmt.setString(1, booking.getCpEmail());
+        pstmt.setString(2, booking.getTourName());
+        pstmt.setString(3, booking.getTourOperator());
+        pstmt.setString(4, booking.getTourLocation());
+        pstmt.setString(5, booking.getStartTimeAsString());
+        pstmt.setString(6, booking.getDateAsString());
+        return pstmt.executeQuery();
     }
-
     
-    private static boolean updateTourTravelers(Connection conn, int travelers,
-        String tourName, String tourOperator, String tourLocation, String tourStartTime,
-        String tourDate, String customerEmail) throws SQLException{
-        String s = "update tour set TourTravellers = TourTravellers + " + travelers
+    private static boolean updateTourTravelers(
+            Connection conn, Booking booking) throws SQLException{
+        String s = "update tour set TourTravellers = TourTravellers + "
+                + booking.getTravelers()
                 + " where TourName = ?"
                 + " and TourOperator = ?"
                 + " and TourLocation = ?"
                 + " and TourStartTime = ?"
                 + " and tourDate = ?;";
         PreparedStatement pstmt = conn.prepareStatement(s);
-        pstmt.setString(1, tourName);
-        pstmt.setString(2, tourOperator);
-        pstmt.setString(3, tourLocation);
-        pstmt.setString(4, tourStartTime);
-        pstmt.setString(5, tourDate);
+        pstmt.setString(1, booking.getTourName());
+        pstmt.setString(2, booking.getTourOperator());
+        pstmt.setString(3, booking.getTourLocation());
+        pstmt.setString(4, booking.getStartTimeAsString());
+        pstmt.setString(5, booking.getDateAsString());
         
         try{
             System.out.println(s);
@@ -134,7 +123,7 @@ public class BookingDAO implements DAO {
             System.err.println(e.getMessage());
             System.err.println(
                 "Tried to update travellers in Tour table but it seems to be full".concat(
-                customerEmail).concat(", in BookingDAO.insertBooking()"));
+                booking.getCpEmail()).concat(", in BookingDAO.insertBooking()"));
             return false;
         }
         return true;
@@ -171,7 +160,24 @@ public class BookingDAO implements DAO {
         }
         return true;
     }
-    */
+    
+     /**
+     * @return conn, Connection to the DayTourSearch database
+     * @throws ClassNotFoundException did not find JDBC driver class
+     * @throws SQLException failed to establish a connection with database
+     */
+    private static Connection getConnection() throws ClassNotFoundException, SQLException {
+        try {
+            Class.forName(DRIVER);
+         }
+        catch (ClassNotFoundException ex) {
+            System.err.println(ex.getMessage());
+            System.err.println("Failed to get class/driver in CustomerDAO.insertCustomer()");
+            throw ex;
+         }
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+        return conn;
+    }
     
     // Test methods. Also deletes all bookings by "dummyCustomer@hi.is"
     public static void main(String[] args) throws SQLException {

@@ -4,4 +4,4 @@ Search engine for day tours offered in Iceland. Availability-based booking with 
 # Project members
 - [Davíð Freyr Björnsson](http://github.com/dfb2/)
 - [Erling Óskar Kristjánsson](https://github.com/eokristjans/)
-- Andrea Ósk Sigurðardóttir
+- [Andrea Ósk Sigurðardóttir](https://github.com/aos26/)

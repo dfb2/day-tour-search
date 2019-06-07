@@ -11,9 +11,6 @@ Search engine for day tours offered in Iceland. Availability-based booking with 
 You need to have the following installed:
 - An IDE. Netbeans was used during the development of this software. 
 - Java SDK.
-## Run app without an IDE
-Open the following file using java:
-folderLocation/⁨day-tour-search⁩/app-desktop⁩/⁨dtsApp⁩/⁨dist⁩/dtsApp.jar
 ## Demo
 ![Searching and booking](demo_searchAndBook.gif)
 

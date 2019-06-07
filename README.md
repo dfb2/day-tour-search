@@ -15,4 +15,5 @@ You need to have the following installed:
 Open the following file using java:
 folderLocation/⁨day-tour-search⁩/app-desktop⁩/⁨dtsApp⁩/⁨dist⁩/dtsApp.jar
 ## Demo
-[Searching and booking]
+![Searching and booking](demo_searchAndBook.gif)
+

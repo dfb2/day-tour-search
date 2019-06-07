@@ -12,5 +12,6 @@ You need to have the following installed:
 - An IDE. Netbeans was used during the development of this software. 
 - Java SDK.
 ## Demo
+### Searching for and booking a day tour
 ![Searching and booking](demo_searchAndBook.gif)
 

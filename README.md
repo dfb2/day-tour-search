@@ -9,7 +9,7 @@ Search engine for day tours offered in Iceland. Availability-based booking with 
 # Installation
 ## Prerequisites
 You need to have the following installed:
-- An IDE. Netbeans was used during the development of this software. 
+- An IDE. Netbeans was used in this project.
 - Java SDK.
 ## Demo
 ### Searching for and booking a day tour
